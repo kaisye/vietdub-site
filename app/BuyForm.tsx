@@ -5,6 +5,7 @@ import { useState } from "react";
 export default function BuyForm() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -16,7 +17,7 @@ export default function BuyForm() {
       const res = await fetch("/api/create-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name }),
+        body: JSON.stringify({ email, name, phone }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Có lỗi xảy ra.");
@@ -49,6 +50,17 @@ export default function BuyForm() {
           placeholder="Nguyễn Văn A"
           value={name}
           onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+      <div className="field">
+        <label htmlFor="phone">Số điện thoại / Zalo (tuỳ chọn)</label>
+        <input
+          id="phone"
+          type="tel"
+          inputMode="tel"
+          placeholder="0901234567"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
         />
       </div>
 

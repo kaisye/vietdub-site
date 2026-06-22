@@ -46,6 +46,7 @@ export async function POST(req: Request) {
     if (typeof body.promoEndsAt === "string") patch.promoEndsAt = body.promoEndsAt.trim();
     if (typeof body.downloadUrl === "string") patch.downloadUrl = body.downloadUrl.trim();
     if (typeof body.zaloGroupUrl === "string") patch.zaloGroupUrl = body.zaloGroupUrl.trim();
+    if (typeof body.demoVideoUrl === "string") patch.demoVideoUrl = body.demoVideoUrl.trim();
 
     const settings = await saveSettings(patch);
     return NextResponse.json({ settings, pricing: pricing(settings) });

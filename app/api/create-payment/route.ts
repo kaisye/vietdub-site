@@ -47,6 +47,7 @@ export async function POST(req: Request) {
       cancelUrl: `${siteUrl}/?cancelled=1`,
       buyerEmail: email,
       buyerName: name || undefined,
+      buyerPhone: phone || undefined,
       items: [{ name: settings.productName, quantity: 1, price: amount }],
     });
 

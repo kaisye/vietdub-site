@@ -14,6 +14,7 @@ export interface Settings {
   promoEndsAt: string; // ISO; "" = không hết hạn
   downloadUrl: string;
   zaloGroupUrl: string;
+  demoVideoUrl: string; // YouTube hoặc link mp4; "" = ẩn mục demo
 }
 
 export interface Pricing {
@@ -32,6 +33,7 @@ const ROWS: { key: string; get: (s: Settings) => string }[] = [
   { key: "promo_ends_at", get: (s) => s.promoEndsAt },
   { key: "download_url", get: (s) => s.downloadUrl },
   { key: "zalo_group_url", get: (s) => s.zaloGroupUrl },
+  { key: "demo_video_url", get: (s) => s.demoVideoUrl },
 ];
 
 function defaults(): Settings {
@@ -48,6 +50,7 @@ function defaults(): Settings {
     promoEndsAt,
     downloadUrl: envDefaults.downloadUrl,
     zaloGroupUrl: envDefaults.zaloGroupUrl,
+    demoVideoUrl: envDefaults.demoVideoUrl,
   };
 }
 
@@ -60,6 +63,7 @@ function fromMap(map: Record<string, string>): Settings {
     promoEndsAt: map["promo_ends_at"] ?? d.promoEndsAt,
     downloadUrl: map["download_url"] || d.downloadUrl,
     zaloGroupUrl: map["zalo_group_url"] ?? d.zaloGroupUrl,
+    demoVideoUrl: map["demo_video_url"] ?? d.demoVideoUrl,
   };
 }
 

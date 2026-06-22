@@ -9,6 +9,7 @@ interface Settings {
   promoEndsAt: string;
   downloadUrl: string;
   zaloGroupUrl: string;
+  demoVideoUrl: string;
 }
 interface Pricing {
   price: number;
@@ -186,6 +187,14 @@ export default function AdminClient() {
             <div className="field full">
               <label>Link nhóm Zalo</label>
               <input value={settings.zaloGroupUrl} onChange={(e) => set("zaloGroupUrl", e.target.value)} />
+            </div>
+            <div className="field full">
+              <label>Link video demo (YouTube hoặc .mp4 — để trống sẽ ẩn mục demo)</label>
+              <input
+                placeholder="https://youtu.be/..."
+                value={settings.demoVideoUrl}
+                onChange={(e) => set("demoVideoUrl", e.target.value)}
+              />
             </div>
           </div>
 

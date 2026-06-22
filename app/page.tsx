@@ -15,9 +15,19 @@ function formatVnd(n: number) {
   return new Intl.NumberFormat("vi-VN").format(n) + "₫";
 }
 
+// Normalise a YouTube watch/short link to an embeddable URL; otherwise treat the
+// value as a direct video file (e.g. .mp4).
+function toEmbed(url: string): { kind: "youtube" | "video" | "none"; src: string } {
+  if (!url) return { kind: "none", src: "" };
+  const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/);
+  if (yt) return { kind: "youtube", src: `https://www.youtube.com/embed/${yt[1]}` };
+  return { kind: "video", src: url };
+}
+
 export default async function Home() {
   const settings = await getSettings();
   const p = pricing(settings);
+  const demo = toEmbed(settings.demoVideoUrl);
 
   return (
     <>
@@ -65,6 +75,27 @@ export default async function Home() {
                 <span>Xác nhận tự động</span>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="demo">
+        <div className="container">
+          <h2 className="demo-title">Xem {settings.productName} hoạt động</h2>
+          <p className="demo-sub">Từ video gốc đến bản lồng tiếng + phụ đề tiếng Việt — tự động.</p>
+          <div className="demo-frame">
+            {demo.kind === "youtube" && (
+              <iframe
+                src={demo.src}
+                title="Demo"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            )}
+            {demo.kind === "video" && <video src={demo.src} controls preload="metadata" />}
+            {demo.kind === "none" && (
+              <div className="demo-placeholder">🎬 Video demo sẽ sớm được cập nhật</div>
+            )}
           </div>
         </div>
       </section>

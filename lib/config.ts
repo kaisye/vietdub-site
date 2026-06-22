@@ -30,6 +30,7 @@ export const envDefaults = {
     "https://github.com/kaisye/VietDubPublic/releases/latest/download/VietDub_0.1.7_x64-setup.exe"
   ),
   zaloGroupUrl: optional("ZALO_GROUP_URL", ""),
+  demoVideoUrl: optional("DEMO_VIDEO_URL", ""),
 };
 
 // Password protecting the /admin dev page. Empty → admin page disabled.
