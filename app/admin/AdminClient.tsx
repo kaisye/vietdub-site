@@ -125,7 +125,7 @@ export default function AdminClient() {
             />
           </div>
           {error && <div className="error">{error}</div>}
-          <button className="btn" disabled={loading}>
+          <button className="btn btn-primary btn-block" disabled={loading}>
             {loading ? "Đang kiểm tra…" : "Đăng nhập"}
           </button>
         </form>
@@ -201,7 +201,7 @@ export default function AdminClient() {
           {error && <div className="error">{error}</div>}
           {saved && <div className="ok-msg">✅ Đã lưu. Khách sẽ thấy thay đổi trong ~30 giây.</div>}
 
-          <button className="btn" disabled={loading}>
+          <button className="btn btn-primary btn-block" disabled={loading}>
             {loading ? "Đang lưu…" : "Lưu thay đổi"}
           </button>
         </form>
