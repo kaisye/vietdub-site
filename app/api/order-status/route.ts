@@ -22,8 +22,9 @@ export async function GET(req: Request) {
     const settings = paid ? await getSettings() : null;
     return NextResponse.json({
       status: hit.order.status,
-      // Only hand out delivery links once payment is confirmed.
-      downloadUrl: settings?.downloadUrl ?? null,
+      // Only hand out delivery links once payment is confirmed. Use the branded
+      // /api/download route so the underlying GitHub URL is not exposed.
+      downloadUrl: paid ? "/api/download" : null,
       zaloGroupUrl: settings?.zaloGroupUrl || null,
     });
   } catch (err) {

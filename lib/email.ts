@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { mailConfig } from "./config";
+import { mailConfig, siteUrl } from "./config";
 import { getSettings } from "./settings";
 
 // Gmail SMTP via app password — free, no domain needed, sends to anyone.
@@ -16,6 +16,8 @@ export async function sendDeliveryEmail(to: string, orderCode: number): Promise<
   if (!mailConfig.enabled()) return;
 
   const s = await getSettings();
+  // Branded download link (hides the underlying GitHub URL from buyers).
+  const dl = `${siteUrl}/api/download`;
   const zaloLine = s.zaloGroupUrl
     ? `<p>Tham gia nhóm Zalo hỗ trợ: <a href="${s.zaloGroupUrl}">${s.zaloGroupUrl}</a></p>`
     : "";
@@ -25,7 +27,7 @@ export async function sendDeliveryEmail(to: string, orderCode: number): Promise<
     <h2 style="color:#4f46e5">Cảm ơn bạn đã mua ${s.productName}!</h2>
     <p>Đơn hàng <b>#${orderCode}</b> đã thanh toán thành công. Dưới đây là phần mềm của bạn:</p>
     <p style="margin:24px 0">
-      <a href="${s.downloadUrl}"
+      <a href="${dl}"
          style="background:#4f46e5;color:#fff;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:bold">
         Tải ${s.productName}
       </a>
@@ -34,7 +36,7 @@ export async function sendDeliveryEmail(to: string, orderCode: number): Promise<
     <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0"/>
     <p style="font-size:13px;color:#6b7280">
       Nếu nút trên không bấm được, copy link sau vào trình duyệt:<br/>
-      <span style="word-break:break-all">${s.downloadUrl}</span>
+      <span style="word-break:break-all">${dl}</span>
     </p>
   </div>`;
 

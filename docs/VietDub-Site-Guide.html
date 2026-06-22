@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VietDub — Trang bán hàng &amp; giao phần mềm tự động · Tài liệu quy trình</title>
+<style>
+  :root {
+    --accent: #f2641e;
+    --accent-deep: #d84e16;
+    --teal: #1fae9c;
+    --ink: #1f2733;
+    --muted: #5b6675;
+    --line: #e6e8ec;
+    --bg-soft: #faf7f3;
+    --code-bg: #f6f8fa;
+    --ok-bg: #ecfdf5; --ok-bd: #a7f3d0; --ok-tx: #047857;
+    --warn-bg: #fff7ed; --warn-bd: #fed7aa; --warn-tx: #b45309;
+    --danger-bg: #fef2f2; --danger-bd: #fecaca; --danger-tx: #b91c1c;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--ink);
+    background: #fff;
+    margin: 0;
+    line-height: 1.62;
+    font-size: 15.5px;
+  }
+  .page { max-width: 880px; margin: 0 auto; padding: 56px 40px 80px; }
+
+  /* cover */
+  .cover {
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 40px 38px;
+    background: linear-gradient(135deg, #fff 0%, var(--bg-soft) 100%);
+    margin-bottom: 44px;
+  }
+  .brand { display: flex; align-items: center; gap: 13px; margin-bottom: 22px; }
+  .brand .mark {
+    width: 46px; height: 46px; border-radius: 13px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+    display: flex; align-items: center; justify-content: center; color: #fff;
+    box-shadow: 3px 3px 0 rgba(31,39,51,.12);
+  }
+  .brand b { font-size: 1.45rem; letter-spacing: -.02em; }
+  .cover h1 { font-size: 2.1rem; line-height: 1.12; letter-spacing: -.025em; margin: 0 0 12px; }
+  .cover p { color: var(--muted); font-size: 1.06rem; margin: 0; max-width: 60ch; }
+  .cover .meta { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip {
+    font-size: .8rem; font-weight: 600; color: var(--accent-deep);
+    background: #fff3ec; border: 1px solid #fbd9c6; border-radius: 30px; padding: 5px 13px;
+  }
+
+  h2 {
+    font-size: 1.5rem; letter-spacing: -.02em; margin: 52px 0 14px;
+    padding-bottom: 10px; border-bottom: 2px solid var(--line);
+  }
+  h2 .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 9px; font-size: .95rem;
+    background: var(--accent); color: #fff; margin-right: 11px; vertical-align: 2px;
+  }
+  h3 { font-size: 1.15rem; margin: 30px 0 10px; }
+  p { margin: 11px 0; }
+  ul, ol { margin: 11px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+  a { color: var(--accent-deep); }
+  strong { font-weight: 700; }
+  code {
+    font-family: "SF Mono", "Cascadia Code", Consolas, monospace; font-size: .87em;
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px;
+  }
+  pre {
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: 10px;
+    padding: 16px 18px; overflow-x: auto; font-size: .85rem; line-height: 1.55;
+  }
+  pre code { background: none; border: none; padding: 0; }
+
+  /* TOC */
+  .toc { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 14px; padding: 22px 26px; }
+  .toc h4 { margin: 0 0 12px; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 34px; }
+  .toc a { color: var(--ink); text-decoration: none; }
+  .toc a:hover { color: var(--accent-deep); }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: .92rem; }
+  th, td { text-align: left; padding: 9px 12px; border: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--bg-soft); font-weight: 700; }
+  td code { white-space: nowrap; }
+
+  .callout { border-radius: 11px; padding: 14px 17px; margin: 16px 0; font-size: .95rem; border: 1px solid; }
+  .callout p { margin: 4px 0; }
+  .callout .t { font-weight: 700; display: block; margin-bottom: 3px; }
+  .ok { background: var(--ok-bg); border-color: var(--ok-bd); color: var(--ok-tx); }
+  .warn { background: var(--warn-bg); border-color: var(--warn-bd); color: var(--warn-tx); }
+  .danger { background: var(--danger-bg); border-color: var(--danger-bd); color: var(--danger-tx); }
+
+  /* flow diagram */
+  .flow { border: 1px solid var(--line); border-radius: 12px; padding: 22px; background: #fff; margin: 18px 0; }
+  .flow-step { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; }
+  .flow-step:not(:last-child) { border-bottom: 1px dashed var(--line); }
+  .flow-step .num {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    background: var(--teal); color: #fff; font-weight: 700; font-size: .85rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .flow-step b { display: block; }
+  .flow-step span { color: var(--muted); font-size: .92rem; }
+
+  .filetree { font-family: "SF Mono", Consolas, monospace; font-size: .85rem; line-height: 1.7; color: var(--ink); }
+  .filetree .c { color: var(--muted); }
+
+  hr { border: none; border-top: 1px solid var(--line); margin: 40px 0; }
+  footer { color: var(--muted); font-size: .85rem; text-align: center; margin-top: 50px; }
+
+  @media print {
+    body { font-size: 11.5pt; }
+    .page { max-width: none; padding: 0 8mm; }
+    h2 { page-break-after: avoid; }
+    pre, table, .callout, .flow, .cover { page-break-inside: avoid; }
+    a { color: var(--ink); text-decoration: none; }
+    .toc ol { columns: 2; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="brand">
+      <span class="mark">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 9v6M8 5v14M12 8v8M16 4v16M20 10v4"/></svg>
+      </span>
+      <b>VietDub</b>
+    </div>
+    <h1>Trang bán hàng &amp; giao phần mềm tự động</h1>
+    <p>Tài liệu quy trình: kiến trúc, thiết lập, vận hành và bảo trì website bán VietDub
+       với thanh toán PayOS tự động, lưu Google Sheet và giao phần mềm qua email + Zalo.</p>
+    <div class="meta">
+      <span class="chip">Next.js 14</span>
+      <span class="chip">PayOS · VietQR</span>
+      <span class="chip">Google Sheets</span>
+      <span class="chip">Vercel (miễn phí)</span>
+      <span class="chip">github.com/kaisye/vietdub-site</span>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <h4>Mục lục</h4>
+    <ol>
+      <li><a href="#s1">Tổng quan &amp; stack miễn phí</a></li>
+      <li><a href="#s2">Luồng hoạt động end-to-end</a></li>
+      <li><a href="#s3">Cấu trúc dự án</a></li>
+      <li><a href="#s4">Biến môi trường &amp; quy tắc bảo mật</a></li>
+      <li><a href="#s5">Thiết lập PayOS</a></li>
+      <li><a href="#s6">Thiết lập Google Sheets</a></li>
+      <li><a href="#s7">Thiết lập email (Gmail)</a></li>
+      <li><a href="#s8">Giá, khuyến mãi &amp; trang /admin</a></li>
+      <li><a href="#s9">Chạy thử trên máy (local)</a></li>
+      <li><a href="#s10">Deploy lên Vercel</a></li>
+      <li><a href="#s11">Vận hành &amp; bảo trì</a></li>
+      <li><a href="#s12">Checklist phát hành</a></li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2 id="s1"><span class="n">1</span>Tổng quan &amp; stack miễn phí</h2>
+  <p>Website cho phép khách <strong>tự mua VietDub bằng VietQR</strong>: khi khách quét mã và
+     chuyển khoản, hệ thống <strong>tự xác nhận</strong>, lưu đơn vào Google Sheet, rồi gửi
+     <strong>link tải + link nhóm Zalo</strong> về email và hiển thị ngay trên trang cảm ơn.
+     Toàn bộ vận hành <strong>không tốn phí cố định</strong>.</p>
+  <table>
+    <tr><th>Thành phần</th><th>Dịch vụ</th><th>Chi phí</th></tr>
+    <tr><td>Web + API webhook</td><td>Vercel Hobby (Next.js + serverless)</td><td>Miễn phí</td></tr>
+    <tr><td>Tên miền</td><td><code>vietdub.vercel.app</code> hoặc domain riêng</td><td>Miễn phí (subdomain)</td></tr>
+    <tr><td>Lưu đơn hàng</td><td>Google Sheets</td><td>Miễn phí</td></tr>
+    <tr><td>Thanh toán</td><td>PayOS (VietQR + webhook)</td><td>Miễn phí, không phí tháng</td></tr>
+    <tr><td>File cài đặt</td><td>GitHub Releases (<code>.exe</code> trên VietDubPublic)</td><td>Miễn phí</td></tr>
+    <tr><td>Gửi email</td><td>Gmail SMTP (app password)</td><td>Miễn phí</td></tr>
+  </table>
+  <div class="callout warn">
+    <span class="t">Mô hình tin tưởng (honor-system)</span>
+    <p>File <code>.exe</code> nằm trên repo public nên ai có link đều tải được. Website chặn
+       người chưa trả tiền <em>thấy</em> link, nhưng không chống được việc người mua chia sẻ
+       lại file. Muốn chống sao chép thật cần thêm <strong>license key trong app VietDub</strong>
+       (một hạng mục riêng, lớn hơn).</p>
+  </div>
+
+  <!-- 2 -->
+  <h2 id="s2"><span class="n">2</span>Luồng hoạt động end-to-end</h2>
+  <div class="flow">
+    <div class="flow-step"><span class="num">1</span><div><b>Khách bấm “Mua” → điền email</b><span>Modal thu email (+ tên, SĐT tuỳ chọn).</span></div></div>
+    <div class="flow-step"><span class="num">2</span><div><b><code>POST /api/create-payment</code></b><span>Sinh mã đơn, ghi đơn <code>PENDING</code> vào Google Sheet, tạo link PayOS (giá tính lại ở server theo khuyến mãi).</span></div></div>
+    <div class="flow-step"><span class="num">3</span><div><b>Chuyển sang trang thanh toán PayOS</b><span>Khách quét VietQR và chuyển khoản.</span></div></div>
+    <div class="flow-step"><span class="num">4</span><div><b>PayOS gọi <code>POST /api/webhook</code></b><span>Xác thực chữ ký PayOS → cập nhật đơn thành <code>PAID</code> → gửi email link tải + Zalo (idempotent, không gửi trùng).</span></div></div>
+    <div class="flow-step"><span class="num">5</span><div><b>Khách quay về <code>/success?orderCode=…</code></b><span>Trang tự hỏi <code>/api/order-status</code> tới khi <code>PAID</code> rồi hiện nút Tải + Zalo.</span></div></div>
+  </div>
+  <div class="callout danger">
+    <span class="t">Webhook không chạy trên localhost</span>
+    <p>PayOS ở ngoài Internet không gọi vào máy bạn được. Bước 4 chỉ test đầy đủ <strong>sau khi
+       deploy lên Vercel</strong> (lúc đó mới có URL công khai cho webhook).</p>
+  </div>
+
+  <!-- 3 -->
+  <h2 id="s3"><span class="n">3</span>Cấu trúc dự án</h2>
+  <pre class="filetree">vietdub-site/
+├─ app/
+│  ├─ page.tsx              <span class="c"># Landing bán hàng (hero, tính năng, demo, giá, FAQ)</span>
+│  ├─ layout.tsx            <span class="c"># Khung trang + nạp font</span>
+│  ├─ globals.css           <span class="c"># Theme cam–kem + style admin/success</span>
+│  ├─ Countdown.tsx         <span class="c"># Đồng hồ đếm ngược khuyến mãi</span>
+│  ├─ components/
+│  │  ├─ BuyButton.tsx       <span class="c"># Nút mở modal mua (client)</span>
+│  │  ├─ BuyModal.tsx        <span class="c"># Modal thu thông tin → tạo thanh toán</span>
+│  │  └─ Faq.tsx             <span class="c"># Accordion câu hỏi</span>
+│  ├─ success/              <span class="c"># Trang cảm ơn, poll trạng thái đơn</span>
+│  ├─ admin/                <span class="c"># Trang dev sửa giá/nội dung (có mật khẩu)</span>
+│  └─ api/
+│     ├─ create-payment/    <span class="c"># Tạo đơn + link PayOS</span>
+│     ├─ webhook/           <span class="c"># PayOS gọi về → PAID → giao hàng</span>
+│     ├─ order-status/      <span class="c"># Cho trang success hỏi trạng thái</span>
+│     └─ admin/settings/    <span class="c"># GET/POST cấu hình (có mật khẩu)</span>
+├─ lib/
+│  ├─ config.ts             <span class="c"># Đọc biến môi trường</span>
+│  ├─ payos.ts              <span class="c"># Client PayOS + sinh mã đơn</span>
+│  ├─ google.ts             <span class="c"># Client Google Sheets dùng chung</span>
+│  ├─ sheets.ts             <span class="c"># Đơn hàng (tab Orders) + thống kê</span>
+│  ├─ settings.ts           <span class="c"># Giá/khuyến mãi/link (tab Settings)</span>
+│  └─ email.ts              <span class="c"># Gửi email qua Gmail SMTP</span>
+├─ .env.example            <span class="c"># Mẫu biến môi trường (có chú thích)</span>
+└─ docs/                    <span class="c"># Tài liệu (file này)</span></pre>
+
+  <!-- 4 -->
+  <h2 id="s4"><span class="n">4</span>Biến môi trường &amp; quy tắc bảo mật</h2>
+  <p>Có <strong>3 nơi độc lập</strong>. Secret <strong>không bao giờ</strong> lên GitHub:</p>
+  <table>
+    <tr><th>Nơi</th><th>Chứa gì</th><th>Có secret?</th></tr>
+    <tr><td>GitHub (repo)</td><td>Chỉ code</td><td>❌ Tuyệt đối không</td></tr>
+    <tr><td><code>.env.local</code> (máy bạn)</td><td>Secret bản local</td><td>✅ — chạy <code>npm run dev</code></td></tr>
+    <tr><td>Vercel → Environment Variables</td><td>Secret bản production</td><td>✅ — web thật chạy</td></tr>
+  </table>
+  <p>Trong code, <code>process.env.X</code> lấy giá trị từ <em>môi trường đang chạy</em>: máy bạn
+     → <code>.env.local</code>; trên Vercel → các ô bạn gõ trong dashboard. Vì vậy
+     <code>.env.local</code> bị gitignore mà web vẫn chạy (Vercel không đọc file này).</p>
+  <h3>Danh sách biến</h3>
+  <table>
+    <tr><th>Biến</th><th>Ý nghĩa</th></tr>
+    <tr><td><code>PRODUCT_NAME</code></td><td>Tên sản phẩm</td></tr>
+    <tr><td><code>BASE_PRICE</code></td><td>Giá gốc (VND), vd 499000</td></tr>
+    <tr><td><code>PROMO_PRICE</code></td><td>Giá khuyến mãi (VND), vd 249000</td></tr>
+    <tr><td><code>PROMO_DAYS</code></td><td>Số ngày khuyến mãi kể từ lần seed (khi <code>PROMO_ENDS_AT</code> trống)</td></tr>
+    <tr><td><code>PROMO_ENDS_AT</code></td><td>Mốc kết thúc cụ thể (ISO). Hết mốc, giá tự về <code>BASE_PRICE</code></td></tr>
+    <tr><td><code>DOWNLOAD_URL</code></td><td>Link <code>.exe</code> trên GitHub Releases</td></tr>
+    <tr><td><code>ZALO_GROUP_URL</code></td><td>Link mời nhóm Zalo</td></tr>
+    <tr><td><code>DEMO_VIDEO_URL</code></td><td>Link YouTube/.mp4 cho mục demo (trống = ẩn)</td></tr>
+    <tr><td><code>ADMIN_PASSWORD</code></td><td>Mật khẩu trang <code>/admin</code> (trống = tắt admin)</td></tr>
+    <tr><td><code>NEXT_PUBLIC_SITE_URL</code></td><td>URL site (local hoặc domain Vercel)</td></tr>
+    <tr><td><code>PAYOS_CLIENT_ID / API_KEY / CHECKSUM_KEY</code></td><td>Khoá PayOS</td></tr>
+    <tr><td><code>GOOGLE_SHEET_ID</code></td><td>ID Google Sheet lưu đơn</td></tr>
+    <tr><td><code>GOOGLE_SERVICE_ACCOUNT_EMAIL</code></td><td>Email service account</td></tr>
+    <tr><td><code>GOOGLE_PRIVATE_KEY</code></td><td>Private key JSON (giữ các <code>\n</code>)</td></tr>
+    <tr><td><code>SMTP_USER / SMTP_PASS</code></td><td>Gmail + app password (tuỳ chọn)</td></tr>
+    <tr><td><code>WEBHOOK_TOKEN</code></td><td>Chuỗi ngẫu nhiên bảo vệ webhook</td></tr>
+  </table>
+
+  <!-- 5 -->
+  <h2 id="s5"><span class="n">5</span>Thiết lập PayOS</h2>
+  <ol>
+    <li>Đăng ký tại <a href="https://my.payos.vn">my.payos.vn</a>, tạo <strong>Kênh thanh toán</strong> (liên kết tài khoản ngân hàng).</li>
+    <li>Vào kênh → mục <strong>API</strong>, lấy <code>PAYOS_CLIENT_ID</code>, <code>PAYOS_API_KEY</code>, <code>PAYOS_CHECKSUM_KEY</code>.</li>
+    <li>Sau khi deploy, đặt <strong>Webhook URL</strong>:<br/>
+      <code>https://&lt;domain&gt;/api/webhook?token=&lt;WEBHOOK_TOKEN&gt;</code> rồi bấm <strong>Kiểm tra</strong>.</li>
+  </ol>
+
+  <!-- 6 -->
+  <h2 id="s6"><span class="n">6</span>Thiết lập Google Sheets</h2>
+  <ol>
+    <li>Tạo Google Sheet trống. Lấy <code>GOOGLE_SHEET_ID</code> trong URL
+      (<code>docs.google.com/spreadsheets/d/<strong>SHEET_ID</strong>/edit</code>).
+      Tab <code>Orders</code> và <code>Settings</code> tự tạo ở lần ghi đầu.</li>
+    <li>Vào <strong>Google Cloud Console</strong> → tạo project → bật <strong>Google Sheets API</strong>.</li>
+    <li><strong>Credentials → Service account</strong> → tạo <strong>key JSON</strong>. Lấy
+      <code>client_email</code> → <code>GOOGLE_SERVICE_ACCOUNT_EMAIL</code>;
+      <code>private_key</code> → <code>GOOGLE_PRIVATE_KEY</code>.</li>
+    <li><strong>Chia sẻ Google Sheet</strong> cho <code>client_email</code> đó, quyền <strong>Editor</strong>.</li>
+  </ol>
+  <div class="callout danger">
+    <span class="t">Hay quên: bước chia sẻ Sheet</span>
+    <p>Thiếu bước chia sẻ cho email service account sẽ lỗi <code>403</code>. Đây là lỗi phổ biến nhất khi cấu hình.</p>
+  </div>
+
+  <!-- 7 -->
+  <h2 id="s7"><span class="n">7</span>Thiết lập email (Gmail) — tuỳ chọn</h2>
+  <ol>
+    <li>Bật <strong>Xác minh 2 bước</strong> cho Gmail.</li>
+    <li>Tạo <strong>App password</strong> (<a href="https://myaccount.google.com/apppasswords">myaccount.google.com/apppasswords</a>) — chuỗi 16 ký tự.</li>
+    <li>Điền <code>SMTP_USER</code> = email Gmail, <code>SMTP_PASS</code> = app password.</li>
+  </ol>
+  <div class="callout ok">
+    <span class="t">Bỏ trống cũng không sao</span>
+    <p>Không điền <code>SMTP_USER/SMTP_PASS</code> thì hệ thống bỏ qua gửi email — khách vẫn nhận
+       link tải ngay trên trang <code>/success</code>.</p>
+  </div>
+
+  <!-- 8 -->
+  <h2 id="s8"><span class="n">8</span>Giá, khuyến mãi &amp; trang /admin</h2>
+  <p>Giá/khuyến mãi/link <strong>không cố định trong code</strong>: chúng nằm trong tab
+     <code>Settings</code> của Google Sheet và sửa được mà <strong>không cần deploy lại</strong>.</p>
+  <h3>Cách giảm giá hoạt động</h3>
+  <ul>
+    <li>Khi <code>now &lt; PROMO_ENDS_AT</code> và <code>PROMO_PRICE &lt; BASE_PRICE</code>: trang hiện
+        giá khuyến mãi, gạch ngang giá gốc, badge <strong>−X%</strong> và đồng hồ đếm ngược.</li>
+    <li>Hết hạn: giá <strong>tự động</strong> về <code>BASE_PRICE</code>.</li>
+    <li>Giá khách trả luôn được tính lại ở server — không sửa được từ trình duyệt.</li>
+  </ul>
+  <h3>Ba cách sửa giá</h3>
+  <table>
+    <tr><th>Cách</th><th>Thao tác</th><th>Deploy lại?</th></tr>
+    <tr><td>Trang <code>/admin</code> (khuyên dùng)</td><td>Đăng nhập, sửa, bấm Lưu</td><td>❌ Không</td></tr>
+    <tr><td>Sửa thẳng Google Sheet</td><td>Đổi ô trong tab <code>Settings</code></td><td>❌ Không</td></tr>
+    <tr><td>Đổi biến môi trường Vercel</td><td>Sửa <code>BASE_PRICE</code>… rồi Redeploy</td><td>✅ Có</td></tr>
+  </table>
+  <p>Trang <code>/admin</code> (vào bằng <code>ADMIN_PASSWORD</code>) cho sửa giá gốc / giá KM / hạn
+     khuyến mãi / tên SP / link tải / link Zalo / link demo, và xem nhanh
+     <strong>số đơn · doanh thu · đơn gần đây</strong>. Thay đổi áp dụng trong ~30 giây.</p>
+
+  <!-- 9 -->
+  <h2 id="s9"><span class="n">9</span>Chạy thử trên máy (local)</h2>
+  <pre><code>cd D:\AgenticAI\vietdub-site
+cp .env.example .env.local   # rồi điền secret
+npm install                  # lần đầu (đã cài sẵn)
+npm run dev                  # http://localhost:3000</code></pre>
+  <ul>
+    <li>Trang chủ hiện ngay kể cả chưa điền secret (giá về mặc định).</li>
+    <li>Nút “Mua” cần khoá PayOS + Google Sheet mới hoạt động.</li>
+    <li>Webhook tự xác nhận chỉ test được sau khi deploy (xem mục 2).</li>
+  </ul>
+
+  <!-- 10 -->
+  <h2 id="s10"><span class="n">10</span>Deploy lên Vercel</h2>
+  <ol>
+    <li>Push code lên GitHub (đã có: <code>github.com/kaisye/vietdub-site</code>).</li>
+    <li><a href="https://vercel.com">vercel.com</a> → <strong>Add New → Project</strong> → chọn repo → <strong>Import</strong>.</li>
+    <li><strong>Settings → Environment Variables</strong>: thêm <strong>tất cả</strong> biến (mục 4) với giá trị thật.
+        Đổi <code>NEXT_PUBLIC_SITE_URL</code> thành domain Vercel.</li>
+    <li><strong>Deploy</strong> → nhận domain <code>https://&lt;tên&gt;.vercel.app</code>.</li>
+    <li>Cập nhật <code>NEXT_PUBLIC_SITE_URL</code> = domain đó → <strong>Redeploy</strong>.</li>
+    <li>Vào PayOS đặt <strong>Webhook URL</strong> trỏ về <code>…/api/webhook?token=…</code>.</li>
+  </ol>
+  <div class="callout ok">
+    <span class="t">Tự động deploy mỗi lần push</span>
+    <p>Sau khi liên kết, mỗi <code>git push</code> lên nhánh <code>main</code> sẽ tự kích hoạt Vercel
+       build lại bản mới. Không cần thao tác thủ công.</p>
+  </div>
+
+  <!-- 11 -->
+  <h2 id="s11"><span class="n">11</span>Vận hành &amp; bảo trì</h2>
+  <table>
+    <tr><th>Tình huống</th><th>Làm gì</th></tr>
+    <tr><td>Đổi giá / mở hoặc tắt khuyến mãi</td><td>Vào <code>/admin</code> sửa → Lưu (≈30s có hiệu lực)</td></tr>
+    <tr><td>Ra bản VietDub mới</td><td>Đổi <code>DOWNLOAD_URL</code> trong <code>/admin</code> (hoặc giữ <code>releases/latest/...</code> thì không cần đổi)</td></tr>
+    <tr><td>Thêm video demo</td><td>Dán link YouTube/.mp4 vào ô Demo trong <code>/admin</code></td></tr>
+    <tr><td>Xem đơn / doanh thu</td><td>Mở <code>/admin</code> hoặc trực tiếp Google Sheet tab <code>Orders</code></td></tr>
+    <tr><td>Sửa giao diện / nội dung tính năng</td><td>Sửa <code>app/page.tsx</code> → <code>git push</code> (Vercel tự deploy)</td></tr>
+    <tr><td>Đơn kẹt <code>PENDING</code> dù đã trả</td><td>Kiểm tra Webhook URL ở PayOS + <code>WEBHOOK_TOKEN</code>; xem log Vercel</td></tr>
+  </table>
+
+  <!-- 12 -->
+  <h2 id="s12"><span class="n">12</span>Checklist phát hành</h2>
+  <ul>
+    <li>☐ PayOS: 3 khoá API đã nhập, kênh thanh toán hoạt động</li>
+    <li>☐ Google Sheet đã chia sẻ cho service account (quyền Editor)</li>
+    <li>☐ Tất cả biến môi trường đã nhập trên Vercel</li>
+    <li>☐ <code>NEXT_PUBLIC_SITE_URL</code> = domain thật + đã Redeploy</li>
+    <li>☐ Webhook URL ở PayOS trỏ đúng <code>…/api/webhook?token=…</code> và đã “Kiểm tra” OK</li>
+    <li>☐ <code>ADMIN_PASSWORD</code> đặt mật khẩu mạnh</li>
+    <li>☐ <code>DOWNLOAD_URL</code> trỏ đúng <code>.exe</code> mới nhất</li>
+    <li>☐ <code>ZALO_GROUP_URL</code> đúng link mời nhóm</li>
+    <li>☐ Mua thử 1 đơn thật để xác nhận toàn bộ luồng</li>
+  </ul>
+
+  <hr/>
+  <footer>
+    VietDub · Tài liệu quy trình trang bán hàng — cập nhật 2026-06-22 ·
+    Repo: github.com/kaisye/vietdub-site
+  </footer>
+
+</div>
+</body>
+</html>

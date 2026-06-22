@@ -43,10 +43,51 @@ export const payosConfig = {
 };
 
 export const sheetsConfig = {
-  sheetId: () => required("GOOGLE_SHEET_ID"),
-  clientEmail: () => required("GOOGLE_SERVICE_ACCOUNT_EMAIL"),
-  // The private key is stored with literal \n; turn them back into newlines.
-  privateKey: () => required("GOOGLE_PRIVATE_KEY").replace(/\\n/g, "\n"),
+  // Accept either the bare Sheet ID or a full spreadsheet URL pasted by mistake.
+  sheetId: () => {
+    const raw = required("GOOGLE_SHEET_ID").trim();
+    const m = raw.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+    return m ? m[1] : raw;
+  },
+  clientEmail: () => {
+    const e = required("GOOGLE_SERVICE_ACCOUNT_EMAIL").trim().replace(/^["']|["']$/g, "");
+    if (!e.includes("gserviceaccount.com")) {
+      throw new Error(
+        "GOOGLE_SERVICE_ACCOUNT_EMAIL phải là email service account (kết thúc bằng .iam.gserviceaccount.com), lấy từ file JSON — không phải email cá nhân."
+      );
+    }
+    return e;
+  },
+  // Normalise the PEM key from any common paste format: strip wrapping quotes,
+  // turn literal \n (and \r\n) into real newlines.
+  privateKey: () => {
+    let k = required("GOOGLE_PRIVATE_KEY").trim();
+    if ((k.startsWith('"') && k.endsWith('"')) || (k.startsWith("'") && k.endsWith("'"))) {
+      k = k.slice(1, -1);
+    }
+    // Normalise newlines from every paste/loader combination we've seen:
+    //  - literal "\n" / "\\n" (single or double-escaped)
+    //  - "\" left in front of a real newline (dotenv mangling a double-escaped,
+    //    double-quoted value)
+    //  - CRLF
+    k = k
+      .replace(/\\\\r\\\\n/g, "\n")
+      .replace(/\\\\n/g, "\n")
+      .replace(/\\r\\n/g, "\n")
+      .replace(/\\n/g, "\n")
+      .replace(/\\\r?\n/g, "\n")
+      .replace(/\r\n/g, "\n");
+    // Extract just the PEM block so stray wrapping quotes/whitespace (from a
+    // double-wrapped or editor-mangled value) can never break decoding.
+    const pem = k.match(/-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?-----END [A-Z ]*PRIVATE KEY-----/);
+    if (pem) k = pem[0] + "\n";
+    if (k.includes("...") || !k.includes("BEGIN PRIVATE KEY")) {
+      throw new Error(
+        "GOOGLE_PRIVATE_KEY chưa có key thật (vẫn là giá trị mẫu). Dán nguyên private_key từ file JSON service account vào .env.local, dạng một dòng trong dấu nháy kép."
+      );
+    }
+    return k;
+  },
 };
 
 export const mailConfig = {
