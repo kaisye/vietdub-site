@@ -2,12 +2,14 @@ import { sheetsApi, ensureTab } from "./google";
 import { sheetsConfig } from "./config";
 
 // Single tab named "Orders". Columns:
-// A orderCode | B email | C name | D phone | E amount | F status | G createdAt | H paidAt
+// A orderCode | B email | C name | D phone | E amount | F status | G createdAt | H paidAt | I platform
 const TAB = "Orders";
-const RANGE = `${TAB}!A:H`;
-const HEADER = ["orderCode", "email", "name", "phone", "amount", "status", "createdAt", "paidAt"];
+const RANGE = `${TAB}!A:I`;
+const HEADER = ["orderCode", "email", "name", "phone", "amount", "status", "createdAt", "paidAt", "platform"];
 
 export type OrderStatus = "PENDING" | "PAID" | "CANCELLED";
+// Which installer the buyer asked for at checkout: "win" (.exe) or "mac" (.dmg).
+export type OrderPlatform = "win" | "mac";
 
 export interface Order {
   orderCode: number;
@@ -18,6 +20,7 @@ export interface Order {
   status: OrderStatus;
   createdAt: string;
   paidAt: string;
+  platform: OrderPlatform;
 }
 
 // Make sure the tab + header row exist, so a fresh blank spreadsheet just works.
@@ -25,7 +28,7 @@ async function ensureHeader(): Promise<void> {
   await ensureTab(TAB);
   const api = sheetsApi();
   const spreadsheetId = sheetsConfig.sheetId();
-  const first = await api.spreadsheets.values.get({ spreadsheetId, range: `${TAB}!A1:H1` });
+  const first = await api.spreadsheets.values.get({ spreadsheetId, range: `${TAB}!A1:I1` });
   if (!first.data.values || first.data.values.length === 0) {
     await api.spreadsheets.values.update({
       spreadsheetId,
@@ -54,6 +57,7 @@ export async function appendOrder(order: Order): Promise<void> {
           order.status,
           order.createdAt,
           order.paidAt,
+          order.platform,
         ],
       ],
     },
@@ -82,6 +86,7 @@ async function readAll(): Promise<{ order: Order; row: number }[]> {
         status: (r[5] ?? "PENDING") as OrderStatus,
         createdAt: r[6] ?? "",
         paidAt: r[7] ?? "",
+        platform: r[8] === "mac" ? "mac" : "win",
       },
     });
   }

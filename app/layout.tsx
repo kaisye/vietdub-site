@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "VietDub — Lồng tiếng & phụ đề video bằng AI",
+  title: "VietDub — Lồng tiếng & phụ đề video bằng AI, miễn phí vận hành",
   description:
-    "Ứng dụng desktop dịch, lồng tiếng và render video bằng AI. Nhiều giọng đọc, nhân bản giọng, phụ đề khớp thời gian — chạy ngay trên máy bạn.",
+    "Ứng dụng desktop dịch, lồng tiếng và render video bằng AI. Không cần API trả phí, không cần GPU — nhiều giọng Edge AI, nhân bản giọng OmniVoice, phụ đề STT/OCR khớp thời gian, chạy ngay trên máy bạn.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

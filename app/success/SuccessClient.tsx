@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 interface StatusResp {
   status: "PENDING" | "PAID" | "CANCELLED" | "UNKNOWN" | "ERROR";
+  platform?: "win" | "mac" | null;
   downloadUrl?: string | null;
   zaloGroupUrl?: string | null;
 }
@@ -70,7 +71,9 @@ export default function SuccessClient({ orderCode }: { orderCode: number }) {
         <p>Cảm ơn bạn. Đơn hàng <b>#{orderCode}</b> đã được xác nhận. Tải phần mềm và tham gia nhóm hỗ trợ bên dưới — link cũng đã được gửi vào email của bạn.</p>
         <div className="actions">
           {data?.downloadUrl && (
-            <a className="primary" href={data.downloadUrl}>⬇️ Tải VietDub</a>
+            <a className="primary" href={data.downloadUrl}>
+              ⬇️ Tải VietDub {data.platform === "mac" ? "cho macOS (.dmg)" : "cho Windows (.exe)"}
+            </a>
           )}
           {data?.zaloGroupUrl && (
             <a className="secondary" href={data.zaloGroupUrl} target="_blank" rel="noreferrer">

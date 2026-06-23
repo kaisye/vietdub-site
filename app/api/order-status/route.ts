@@ -20,11 +20,14 @@ export async function GET(req: Request) {
     }
     const paid = hit.order.status === "PAID";
     const settings = paid ? await getSettings() : null;
+    const platform = hit.order.platform;
     return NextResponse.json({
       status: hit.order.status,
+      platform,
       // Only hand out delivery links once payment is confirmed. Use the branded
-      // /api/download route so the underlying GitHub URL is not exposed.
-      downloadUrl: paid ? "/api/download" : null,
+      // /api/download route (with the buyer's OS) so the underlying GitHub URL is
+      // not exposed.
+      downloadUrl: paid ? `/api/download?os=${platform}` : null,
       zaloGroupUrl: settings?.zaloGroupUrl || null,
     });
   } catch (err) {

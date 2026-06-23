@@ -5,16 +5,18 @@ import { sheetsConfig, envDefaults } from "./config";
 // the Google Sheet. Edit them from /admin (or directly in the sheet) — changes
 // take effect within ~30s, no redeploy needed.
 const TAB = "Settings";
-const RANGE = `${TAB}!A1:B10`;
+const RANGE = `${TAB}!A1:B12`;
 
 export interface Settings {
   productName: string;
   basePrice: number; // giá gốc
   promoPrice: number; // giá khuyến mãi
   promoEndsAt: string; // ISO; "" = không hết hạn
-  downloadUrl: string;
+  downloadUrl: string; // Windows (.exe)
+  downloadUrlMac: string; // macOS (.dmg)
   zaloGroupUrl: string;
   demoVideoUrl: string; // YouTube hoặc link mp4; "" = ẩn mục demo
+  facebookUrl: string; // trang demo video lồng tiếng; "" = ẩn link
 }
 
 export interface Pricing {
@@ -32,8 +34,10 @@ const ROWS: { key: string; get: (s: Settings) => string }[] = [
   { key: "promo_price", get: (s) => String(s.promoPrice) },
   { key: "promo_ends_at", get: (s) => s.promoEndsAt },
   { key: "download_url", get: (s) => s.downloadUrl },
+  { key: "download_url_mac", get: (s) => s.downloadUrlMac },
   { key: "zalo_group_url", get: (s) => s.zaloGroupUrl },
   { key: "demo_video_url", get: (s) => s.demoVideoUrl },
+  { key: "facebook_url", get: (s) => s.facebookUrl },
 ];
 
 function defaults(): Settings {
@@ -49,8 +53,10 @@ function defaults(): Settings {
     promoPrice: envDefaults.promoPrice,
     promoEndsAt,
     downloadUrl: envDefaults.downloadUrl,
+    downloadUrlMac: envDefaults.downloadUrlMac,
     zaloGroupUrl: envDefaults.zaloGroupUrl,
     demoVideoUrl: envDefaults.demoVideoUrl,
+    facebookUrl: envDefaults.facebookUrl,
   };
 }
 
@@ -62,8 +68,10 @@ function fromMap(map: Record<string, string>): Settings {
     promoPrice: Number(map["promo_price"] || d.promoPrice),
     promoEndsAt: map["promo_ends_at"] ?? d.promoEndsAt,
     downloadUrl: map["download_url"] || d.downloadUrl,
+    downloadUrlMac: map["download_url_mac"] || d.downloadUrlMac,
     zaloGroupUrl: map["zalo_group_url"] ?? d.zaloGroupUrl,
     demoVideoUrl: map["demo_video_url"] ?? d.demoVideoUrl,
+    facebookUrl: map["facebook_url"] ?? d.facebookUrl,
   };
 }
 

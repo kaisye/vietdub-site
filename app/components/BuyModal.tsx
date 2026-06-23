@@ -16,6 +16,7 @@ export default function BuyModal({
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [platform, setPlatform] = useState<"win" | "mac">("win");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -56,7 +57,7 @@ export default function BuyModal({
       const res = await fetch("/api/create-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name, phone }),
+        body: JSON.stringify({ email, name, phone, platform }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Có lỗi xảy ra.");
@@ -114,8 +115,39 @@ export default function BuyModal({
               />
             </div>
             <div className="field">
+              <label>Hệ điều hành của bạn *</label>
+              <div className="os-seg" role="radiogroup" aria-label="Hệ điều hành">
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={platform === "win"}
+                  className={platform === "win" ? "active" : ""}
+                  onClick={() => setPlatform("win")}
+                >
+                  <span className="os-ico">🪟</span>
+                  <span>Windows</span>
+                  <small>.exe</small>
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={platform === "mac"}
+                  className={platform === "mac" ? "active" : ""}
+                  onClick={() => setPlatform("mac")}
+                >
+                  <span className="os-ico"></span>
+                  <span>macOS</span>
+                  <small>.dmg · Apple Silicon</small>
+                </button>
+              </div>
+            </div>
+            <div className="field">
               <label>Gói</label>
-              <input type="text" value={`Bản quyền trọn đời — ${priceText}`} readOnly />
+              <input
+                type="text"
+                value={`Bản quyền trọn đời (${platform === "mac" ? "macOS" : "Windows"}) — ${priceText}`}
+                readOnly
+              />
             </div>
 
             {error && <div className="error">{error}</div>}

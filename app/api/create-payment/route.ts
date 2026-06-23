@@ -15,6 +15,8 @@ export async function POST(req: Request) {
     const email = String(body.email ?? "").trim().toLowerCase();
     const name = String(body.name ?? "").trim();
     const phone = String(body.phone ?? "").trim();
+    // Which installer the buyer wants (drives the download link they receive).
+    const platform = body.platform === "mac" ? "mac" : "win";
 
     if (!emailRe.test(email)) {
       return NextResponse.json({ error: "Email không hợp lệ." }, { status: 400 });
@@ -37,6 +39,7 @@ export async function POST(req: Request) {
       status: "PENDING",
       createdAt: new Date().toISOString(),
       paidAt: "",
+      platform,
     });
 
     const link = await payos().createPaymentLink({

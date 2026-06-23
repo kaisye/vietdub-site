@@ -44,7 +44,7 @@ export async function POST(req: Request) {
     // Idempotent: only act the first time it flips to PAID.
     if (hit.order.status !== "PAID") {
       await setStatus(orderCode, "PAID", new Date().toISOString());
-      await sendDeliveryEmail(hit.order.email, orderCode).catch((e) =>
+      await sendDeliveryEmail(hit.order.email, orderCode, hit.order.platform).catch((e) =>
         console.error("delivery email failed:", e)
       );
     }

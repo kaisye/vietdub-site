@@ -8,8 +8,10 @@ interface Settings {
   promoPrice: number;
   promoEndsAt: string;
   downloadUrl: string;
+  downloadUrlMac: string;
   zaloGroupUrl: string;
   demoVideoUrl: string;
+  facebookUrl: string;
 }
 interface Pricing {
   price: number;
@@ -181,8 +183,12 @@ export default function AdminClient() {
               />
             </div>
             <div className="field full">
-              <label>Link tải (.exe)</label>
+              <label>Link tải Windows (.exe)</label>
               <input value={settings.downloadUrl} onChange={(e) => set("downloadUrl", e.target.value)} />
+            </div>
+            <div className="field full">
+              <label>Link tải macOS (.dmg)</label>
+              <input value={settings.downloadUrlMac} onChange={(e) => set("downloadUrlMac", e.target.value)} />
             </div>
             <div className="field full">
               <label>Link nhóm Zalo</label>
@@ -194,6 +200,14 @@ export default function AdminClient() {
                 placeholder="https://youtu.be/..."
                 value={settings.demoVideoUrl}
                 onChange={(e) => set("demoVideoUrl", e.target.value)}
+              />
+            </div>
+            <div className="field full">
+              <label>Link Facebook (trang demo video lồng tiếng — để trống sẽ ẩn link)</label>
+              <input
+                placeholder="https://facebook.com/..."
+                value={settings.facebookUrl}
+                onChange={(e) => set("facebookUrl", e.target.value)}
               />
             </div>
           </div>
