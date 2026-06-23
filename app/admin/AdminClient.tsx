@@ -62,6 +62,11 @@ export default function AdminClient() {
   const [pricing, setPricing] = useState<Pricing | null>(null);
   const [summary, setSummary] = useState<Summary | null>(null);
 
+  const [testEmail, setTestEmail] = useState("");
+  const [testPlatform, setTestPlatform] = useState<"win" | "mac">("win");
+  const [emailStatus, setEmailStatus] = useState<{ msg: string; ok: boolean } | null>(null);
+  const [sendingEmail, setSendingEmail] = useState<number | "test" | null>(null);
+
   async function login(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -102,6 +107,26 @@ export default function AdminClient() {
       setError(err instanceof Error ? err.message : "Lỗi.");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function sendEmail(opts: { to?: string; orderCode?: number; platform?: "win" | "mac" }) {
+    const key = opts.orderCode ?? "test";
+    setSendingEmail(key);
+    setEmailStatus(null);
+    try {
+      const res = await fetch("/api/admin/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": pw },
+        body: JSON.stringify(opts),
+      });
+      const data = await res.json();
+      if (!res.ok) setEmailStatus({ ok: false, msg: data.error || "Gửi thất bại." });
+      else setEmailStatus({ ok: true, msg: `Đã gửi tới ${data.to}` });
+    } catch (err) {
+      setEmailStatus({ ok: false, msg: err instanceof Error ? err.message : "Lỗi mạng." });
+    } finally {
+      setSendingEmail(null);
     }
   }
 
@@ -221,10 +246,54 @@ export default function AdminClient() {
         </form>
       )}
 
+      {/* ── Test email ─────────────────────────────────── */}
+      {authed && (
+        <div className="admin-section" style={{ marginTop: 28 }}>
+          <h3 style={{ marginBottom: 8, fontSize: 15 }}>Kiểm tra gửi email</h3>
+          <p className="hint" style={{ marginBottom: 12 }}>
+            Gửi thử email link tải về địa chỉ bất kỳ (không cần mua thật). Dùng để xác nhận cấu hình SMTP hoạt động.
+          </p>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end" }}>
+            <div className="field" style={{ flex: "1 1 220px", marginBottom: 0 }}>
+              <label>Email nhận</label>
+              <input
+                type="email"
+                placeholder="test@example.com"
+                value={testEmail}
+                onChange={(e) => setTestEmail(e.target.value)}
+              />
+            </div>
+            <div className="field" style={{ minWidth: 120, marginBottom: 0 }}>
+              <label>Nền tảng</label>
+              <select
+                value={testPlatform}
+                onChange={(e) => setTestPlatform(e.target.value as "win" | "mac")}
+              >
+                <option value="win">Windows</option>
+                <option value="mac">macOS</option>
+              </select>
+            </div>
+            <button
+              className="btn btn-primary"
+              disabled={sendingEmail === "test" || !testEmail}
+              onClick={() => sendEmail({ to: testEmail, platform: testPlatform })}
+              style={{ marginBottom: 0 }}
+            >
+              {sendingEmail === "test" ? "Đang gửi…" : "Gửi thử"}
+            </button>
+          </div>
+          {emailStatus && (
+            <div className={emailStatus.ok ? "ok-msg" : "error"} style={{ marginTop: 8 }}>
+              {emailStatus.ok ? "✅ " : "❌ "}{emailStatus.msg}
+            </div>
+          )}
+        </div>
+      )}
+
       {summary && summary.recent.length > 0 && (
-        <table className="table">
+        <table className="table" style={{ marginTop: 24 }}>
           <thead>
-            <tr><th>Mã đơn</th><th>Email</th><th>Số tiền</th><th>Trạng thái</th></tr>
+            <tr><th>Mã đơn</th><th>Email</th><th>Số tiền</th><th>Trạng thái</th><th></th></tr>
           </thead>
           <tbody>
             {summary.recent.map((o) => (
@@ -233,6 +302,18 @@ export default function AdminClient() {
                 <td>{o.email}</td>
                 <td>{vnd(o.amount)}</td>
                 <td><span className={`pill ${o.status}`}>{o.status}</span></td>
+                <td>
+                  {o.status === "PAID" && (
+                    <button
+                      className="btn btn-sm"
+                      disabled={sendingEmail === o.orderCode}
+                      onClick={() => sendEmail({ orderCode: o.orderCode })}
+                      title="Gửi lại email link tải"
+                    >
+                      {sendingEmail === o.orderCode ? "…" : "Gửi lại"}
+                    </button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
