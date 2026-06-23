@@ -89,6 +89,7 @@ nav {
   box-shadow: 3px 3px 0 rgba(42, 32, 24, 0.2);
   color: #fff;
   flex-shrink: 0;
+  overflow: hidden;
 }
 .navlinks {
   display: flex;
@@ -161,17 +162,11 @@ nav {
 
 /* ---- hero ---- */
 .hero {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 50px;
-  align-items: center;
-  padding: 60px 0 70px;
+  padding: 58px 0 30px;
 }
 @media (max-width: 920px) {
   .hero {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    padding: 40px 0 52px;
+    padding: 40px 0 24px;
   }
 }
 .pill {
@@ -331,6 +326,38 @@ nav {
 .f3 { top: 116px; right: -16px; background: var(--sky); }
 @media (max-width: 920px) {
   .f2, .f3 { display: none; }
+}
+
+/* ---- wide horizontal flow banner (under the headline) ---- */
+.stage-wide {
+  min-height: auto;
+  margin-bottom: 72px;
+}
+.stage-wide .app-body {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.stage-wide .task-row {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 0;
+  min-height: 100%;
+}
+.stage-wide .task-row .tx {
+  flex: none;
+  width: 100%;
+}
+.stage-wide .task-row .st {
+  align-self: flex-start;
+}
+/* reposition the floating chips around the wide banner */
+.stage-wide .f1 { top: -16px; left: 26px; right: auto; bottom: auto; }
+.stage-wide .f2 { top: auto; bottom: -16px; left: 46px; right: auto; }
+.stage-wide .f3 { top: -16px; right: 26px; left: auto; bottom: auto; }
+@media (max-width: 760px) {
+  .stage-wide .app-body { grid-template-columns: 1fr; }
 }
 
 /* ---- strip ---- */
@@ -783,6 +810,42 @@ footer .fdesc {
   background: var(--bg-top);
   font-weight: 600;
 }
+.os-seg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.os-seg button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 12px 8px;
+  border: 1.5px solid var(--ink);
+  border-radius: 12px;
+  background: #fff;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: box-shadow 0.12s, transform 0.12s;
+}
+.os-seg button .os-ico {
+  font-size: 1.3rem;
+}
+.os-seg button small {
+  font-weight: 500;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+.os-seg button.active {
+  background: var(--bg-top);
+  box-shadow: 3px 3px 0 var(--accent);
+}
+.os-seg button:hover {
+  transform: translateY(-1px);
+}
 .error {
   background: #fdecec;
   color: var(--accent-deep);
@@ -965,4 +1028,30 @@ footer .fdesc {
     transition: none !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ---- real logo image inside the badge ---- */
+img.logo {
+  background: transparent;
+  object-fit: cover;
+  padding: 0;
+  box-shadow: none;
+}
+
+/* ---- support: payment-access note (replaces the old join button) ---- */
+.pay-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(242, 100, 30, 0.08);
+  border: 1.5px dashed var(--accent);
+  border-radius: 12px;
+  padding: 13px 15px;
+  margin-top: 6px;
+  font-size: 0.92rem;
+  color: var(--accent-deep);
+  font-weight: 600;
+}
+.pay-note span {
+  font-size: 1.05rem;
 }

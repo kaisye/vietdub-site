@@ -18,20 +18,22 @@ function toEmbed(url: string): { kind: "youtube" | "video" | "none"; src: string
   return { kind: "video", src: url };
 }
 
+// Six pillars of the pipeline. Subtitle & translation are split into two so the
+// grid stays at six even without the (removed) source-separation card.
 const features = [
-  { b: "b-sky", ico: "🌐", h: "Dịch & phụ đề tự động", p: "Nhận dạng lời thoại (Groq / NVIDIA hoặc phụ đề có sẵn), dịch qua 9router và tạo phụ đề khớp thời gian." },
-  { b: "b-peach", ico: "🎙️", h: "Lồng tiếng AI, nhiều giọng", p: "Edge TTS dùng ngay, VieNeu tiếng Việt, hoặc OmniVoice nhân bản giọng từ chính mẫu giọng của bạn." },
-  { b: "b-mint", ico: "⏱️", h: "Khớp tốc độ & nhịp thoại", p: "Tự chỉnh tốc độ đọc cho khít timing gốc, giữ lời thoại tự nhiên và đúng nhịp video." },
-  { b: "b-lilac", ico: "🎵", h: "Nhạc nền & tách giọng", p: "Giữ nhạc nền, thêm hiệu ứng âm thanh; chế độ hybrid tách giọng gốc khi cần." },
-  { b: "b-teal", ico: "🔒", h: "Chạy cục bộ, riêng tư", p: "Backend chỉ chạy trên 127.0.0.1, video và cấu hình nằm trên máy bạn. Không cần quyền admin." },
-  { b: "b-sand", ico: "🔄", h: "Render & tự cập nhật", p: "Xuất video hoàn chỉnh với FFmpeg tích hợp; app tự kiểm tra và cài bản mới đã ký an toàn." },
+  { b: "b-sky", ico: "📥", h: "Tải video đa nền tảng", p: "Tải trực tiếp từ YouTube, Facebook, Douyin… rồi tạo phụ đề bằng STT, bóc phụ đề cứng bằng OCR, hoặc nạp .srt có sẵn." },
+  { b: "b-mint", ico: "🌐", h: "Dịch khớp thời gian", p: "Dịch tự động sang tiếng Việt, giữ nguyên timing từng dòng để phụ đề và lời thoại luôn khít với video." },
+  { b: "b-peach", ico: "🎙️", h: "Lồng tiếng Edge AI", p: "Hàng chục giọng đọc tự nhiên, dùng được ngay — không cần cấu hình cao, không cần GPU, không tốn API trả phí." },
+  { b: "b-lilac", ico: "🧬", h: "Nhân bản giọng OmniVoice", p: "Clone giọng từ chính mẫu giọng của bạn, chạy qua Google Colab miễn phí hoặc bằng GPU nếu có." },
+  { b: "b-sand", ico: "⏱️", h: "Khớp tốc độ & nhạc nền", p: "Tự chỉnh tốc độ đọc cho khít timing gốc; giữ nhạc nền và thêm hiệu ứng âm thanh khi cần." },
+  { b: "b-teal", ico: "🎬", h: "Render & tự cập nhật", p: "Xuất video hoàn chỉnh với FFmpeg tích hợp; app chạy cục bộ, riêng tư và tự cài bản cập nhật đã ký an toàn." },
 ];
 
 const faqItems: FaqItem[] = [
   { q: "Mua một lần thì dùng được bao lâu?", a: "Vĩnh viễn. Sau khi thanh toán bạn nhận link tải về email và dùng được mãi trên máy của mình, kèm các bản cập nhật miễn phí." },
-  { q: "Tôi nhận phần mềm bằng cách nào?", a: "Sau khi quét VietQR và chuyển khoản, hệ thống tự xác nhận trong vài giây, gửi link tải + link nhóm Zalo về email và hiện ngay trên trang cảm ơn." },
-  { q: "Chạy được trên hệ điều hành nào?", a: "Windows 10/11 (x64) và macOS chip Apple Silicon (M1 trở lên). Windows ARM chạy qua giả lập x64. Trình cài đặt tự lo môi trường cần thiết." },
-  { q: "Cần chuẩn bị gì để dùng?", a: "Giọng Edge TTS dùng được ngay không cần GPU. Phần dịch cần 9router (app tự tải, không cần quyền admin) hoặc API key Groq/NVIDIA cho nhận dạng. VieNeu/OmniVoice tải thêm khi dùng." },
+  { q: "Tôi nhận phần mềm và vào nhóm Zalo bằng cách nào?", a: "Sau khi quét VietQR và chuyển khoản, hệ thống tự xác nhận trong vài giây rồi gửi link tải + link nhóm Zalo hỗ trợ về email, đồng thời hiện ngay trên trang cảm ơn." },
+  { q: "Có tốn chi phí API hay cần GPU không?", a: "Không. Giọng Edge AI cùng phần nhận dạng và dịch dùng engine miễn phí, chạy tốt trên laptop thường mà không cần GPU. Nếu muốn nhân bản giọng bằng OmniVoice, bạn chạy qua Google Colab miễn phí hoặc dùng GPU để nhanh hơn." },
+  { q: "Chạy được trên hệ điều hành nào?", a: "Windows 10/11 (x64) và macOS chip Apple Silicon (M1 trở lên). Trình cài đặt tự lo môi trường cần thiết, không cần quyền admin." },
   { q: "Dữ liệu của tôi có an toàn không?", a: "Có. App chạy cục bộ, backend chỉ bind 127.0.0.1, video và cấu hình không gửi lên máy chủ của chúng tôi. Bạn toàn quyền kiểm soát." },
 ];
 
@@ -41,14 +43,11 @@ export default async function Home() {
   const demo = toEmbed(settings.demoVideoUrl);
   const priceText = vnd(p.price);
   const name = settings.productName;
-  const zalo = settings.zaloGroupUrl || "#";
+  const fb = settings.facebookUrl;
 
   const Logo = (
-    <span className="logo" aria-hidden>
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-        <path d="M4 9v6M8 5v14M12 8v8M16 4v16M20 10v4" />
-      </svg>
-    </span>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img className="logo" src="/logo.png" alt={`${name} logo`} width={40} height={40} />
   );
 
   return (
@@ -73,66 +72,62 @@ export default async function Home() {
       {/* HERO */}
       <div className="wrap" id="top">
         <section className="hero">
-          <div>
-            <span className="pill"><span className="dot" /> Đã phát hành · Windows &amp; macOS</span>
-            <h1>Lồng tiếng &amp; phụ đề video,<br /><span className="hl">để AI lo.</span></h1>
-            <p className="lead">
-              {name} dịch, lồng tiếng và render video ngay trên máy bạn — nhiều giọng đọc, nhân
-              bản giọng từ mẫu, phụ đề khớp thời gian. Trả một lần, dùng mãi mãi.
-            </p>
-            <div className="cta-row">
-              <BuyButton className="btn btn-primary">Mua bản quyền — {priceText}</BuyButton>
-              <a className="btn" href="#demo">Xem demo</a>
-            </div>
-            <div className="ticks">
-              <span><span className="ck">✓</span> Trả một lần, dùng vĩnh viễn</span>
-              <span><span className="ck">✓</span> Tự động cập nhật</span>
-              <span><span className="ck">✓</span> Chạy cục bộ, riêng tư</span>
-            </div>
+          <span className="pill"><span className="dot" /> Miễn phí vận hành · Windows &amp; macOS</span>
+          <h1>Lồng tiếng &amp; phụ đề video,<br /><span className="hl">không tốn một xu vận hành.</span></h1>
+          <p className="lead">
+            Dán link YouTube, Facebook hoặc Douyin để {name} tải, dịch, lồng tiếng và render video
+            ngay trên máy bạn — không cần API trả phí, không cần GPU (có thì càng nhanh). Phụ đề
+            STT/OCR, giọng Edge AI và nhân bản giọng OmniVoice. Trả một lần, dùng mãi mãi.
+          </p>
+          <div className="cta-row">
+            <BuyButton className="btn btn-primary">Mua bản quyền — {priceText}</BuyButton>
+            <a className="btn" href="#demo">Xem demo</a>
           </div>
+          <div className="ticks">
+            <span><span className="ck">✓</span> Không API trả phí</span>
+            <span><span className="ck">✓</span> Không cần GPU</span>
+            <span><span className="ck">✓</span> Chạy cục bộ, riêng tư</span>
+          </div>
+        </section>
 
-          <div>
-            <div className="stage">
-              <span className="floaty f1">Nhân bản giọng ✦</span>
-              <span className="floaty f2">Chạy cục bộ ⚡</span>
-              <span className="floaty f3">Phụ đề khớp ⏱</span>
-              <div className="app-window">
-                <div className="app-bar"><i /><i /><i /><span className="ttl">{name} — Tiến trình dự án</span></div>
-                <div className="app-body">
-                  <div className="task-row">
-                    <span className="ic b-sky">📥</span>
-                    <div className="tx"><b>Tải &amp; nhận dạng lời thoại</b><small>video.mp4 · 12:48</small></div>
-                    <span className="st done">Xong</span>
-                  </div>
-                  <div className="task-row">
-                    <span className="ic b-mint">🌐</span>
-                    <div className="tx"><b>Dịch phụ đề (9router)</b><small>EN → VI · 320 dòng</small></div>
-                    <span className="st done">Xong</span>
-                  </div>
-                  <div className="task-row">
-                    <span className="ic b-peach">🎙️</span>
-                    <div className="tx"><b>Lồng tiếng AI · nhân bản giọng</b><small>Đang tổng hợp…</small></div>
-                    <span className="st run">Đang chạy</span>
-                  </div>
-                  <div className="task-row">
-                    <span className="ic b-lilac">🎬</span>
-                    <div className="tx"><b>Render bản hoàn chỉnh</b><small>1080p · MP4</small></div>
-                    <span className="st run">Chờ</span>
-                  </div>
-                </div>
+        {/* FLOW — horizontal banner under the headline */}
+        <div className="stage stage-wide">
+          <div className="app-window">
+            <div className="app-bar"><i /><i /><i /><span className="ttl">{name} — Tiến trình dự án</span></div>
+            <div className="app-body">
+              <div className="task-row">
+                <span className="ic b-sky">📥</span>
+                <div className="tx"><b>Tải video đa nền tảng</b><small>YouTube · Facebook · Douyin · STT/OCR</small></div>
+                <span className="st done">Xong</span>
+              </div>
+              <div className="task-row">
+                <span className="ic b-mint">🌐</span>
+                <div className="tx"><b>Dịch phụ đề khớp thời gian</b><small>EN → VI · 320 dòng</small></div>
+                <span className="st done">Xong</span>
+              </div>
+              <div className="task-row">
+                <span className="ic b-peach">🎙️</span>
+                <div className="tx"><b>Lồng tiếng · Edge AI / OmniVoice</b><small>Đang tổng hợp…</small></div>
+                <span className="st run">Đang chạy</span>
+              </div>
+              <div className="task-row">
+                <span className="ic b-lilac">🎬</span>
+                <div className="tx"><b>Render bản hoàn chỉnh</b><small>1080p · MP4</small></div>
+                <span className="st run">Chờ</span>
               </div>
             </div>
           </div>
-        </section>
+        </div>
       </div>
 
       {/* STRIP */}
       <div className="strip">
         <div className="wrap">
-          <span>✓ Windows 10/11 x64</span>
+          <span>✓ YouTube · Facebook · Douyin</span>
+          <span>✓ Không API trả phí</span>
+          <span>✓ Không cần GPU</span>
           <span>✓ macOS Apple Silicon</span>
-          <span>✓ Cài đặt &lt; 1 phút</span>
-          <span>✓ Dữ liệu trên máy bạn</span>
+          <span>✓ Cài đặt &lt; 5 phút</span>
           <span>✓ Tự động cập nhật</span>
         </div>
       </div>
@@ -141,7 +136,7 @@ export default async function Home() {
       <section className="block" id="features">
         <div className="wrap">
           <div className="eyebrow">Tính năng</div>
-          <h2 className="h2">Cả quy trình lồng tiếng video, gói gọn trong một app.</h2>
+          <h2 className="h2">Cả quy trình lồng tiếng video, miễn phí vận hành — gói trong một app.</h2>
           <div className="feat-grid">
             {features.map((f) => (
               <div className="card" key={f.h}>
@@ -174,6 +169,16 @@ export default async function Home() {
             {demo.kind === "video" && <video src={demo.src} controls preload="metadata" />}
             {demo.kind === "none" && <div className="demo-placeholder">🎬 Video demo sẽ sớm được cập nhật</div>}
           </div>
+          {fb && (
+            <div style={{ marginTop: 26, display: "flex", justifyContent: "center" }}>
+              <a className="btn" href={fb} target="_blank" rel="noopener noreferrer">
+                <svg width="20" height="20" viewBox="0 0 24 24" style={{ fill: "#1877f2" }} aria-hidden>
+                  <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.52 1.49-3.9 3.78-3.9 1.1 0 2.24.19 2.24.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.9h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94Z" />
+                </svg>
+                Xem thêm video dịch bằng {name} trên Facebook
+              </a>
+            </div>
+          )}
         </div>
       </section>
 
@@ -183,7 +188,7 @@ export default async function Home() {
           <div className="eyebrow">Báo giá</div>
           <h2 className="h2" style={{ margin: "0 auto" }}>Một mức giá. Không thuê bao.</h2>
           <p className="sec-intro" style={{ margin: "16px auto 0" }}>
-            Trả một lần, sở hữu vĩnh viễn kèm cập nhật miễn phí. Đơn giản vậy thôi.
+            Trả một lần, sở hữu vĩnh viễn kèm cập nhật miễn phí — và không tốn thêm chi phí API hay GPU nào.
           </p>
           <div className="price-wrap">
             <div className="price-card">
@@ -198,11 +203,11 @@ export default async function Home() {
                 <div><Countdown endsAt={p.promoEndsAt} /></div>
               )}
               <ul className="price-feats">
-                <li><span className="ck">✓</span> Toàn bộ tính năng dịch + lồng tiếng + render</li>
+                <li><span className="ck">✓</span> Toàn bộ tính năng phụ đề + dịch + lồng tiếng + render</li>
+                <li><span className="ck">✓</span> Không tốn API trả phí, không cần GPU</li>
                 <li><span className="ck">✓</span> Dùng vĩnh viễn trên máy của bạn</li>
                 <li><span className="ck">✓</span> Cập nhật phiên bản miễn phí, tự động</li>
-                <li><span className="ck">✓</span> Link tải gửi qua email tự động</li>
-                <li><span className="ck">✓</span> Hỗ trợ trực tiếp qua nhóm Zalo</li>
+                <li><span className="ck">✓</span> Vào nhóm Zalo hỗ trợ trực tiếp</li>
               </ul>
               <BuyButton className="btn btn-primary btn-block">Mua &amp; nhận link tải</BuyButton>
             </div>
@@ -215,19 +220,21 @@ export default async function Home() {
         <div className="wrap">
           <div>
             <div className="eyebrow">Hỗ trợ</div>
-            <h2 className="h2">Cần giúp đỡ? Nhắn nhóm Zalo.</h2>
+            <h2 className="h2">Mua bản quyền là vào thẳng nhóm Zalo.</h2>
             <p className="sec-intro">
-              Tham gia nhóm Zalo để được hỗ trợ cài đặt, nhận thông báo cập nhật và trao đổi
-              trực tiếp với đội ngũ. Phản hồi nhanh trong giờ làm việc.
+              Khách đã thanh toán được mời vào nhóm Zalo riêng để được hỗ trợ cài đặt, hướng dẫn nhân
+              bản giọng, nhận thông báo cập nhật và trao đổi trực tiếp với đội ngũ. Phản hồi nhanh
+              trong giờ làm việc.
             </p>
           </div>
           <div className="zalo-card">
             <div className="zi">Z</div>
             <h3>Nhóm hỗ trợ {name}</h3>
-            <p>Đặt câu hỏi, báo lỗi hoặc xin trợ giúp cài đặt giọng/đường truyền. Cả cộng đồng và đội ngũ cùng hỗ trợ bạn.</p>
-            <a className="btn btn-primary btn-block" href={zalo} target="_blank" rel="noopener noreferrer">
-              Tham gia nhóm Zalo
-            </a>
+            <p>Đặt câu hỏi, báo lỗi hoặc xin hướng dẫn cấu hình giọng/đường truyền. Cả cộng đồng và đội ngũ cùng hỗ trợ bạn.</p>
+            <div className="pay-note">
+              <span>💳</span>
+              <div>Link tham gia nhóm Zalo được gửi qua email ngay sau khi bạn thanh toán bản quyền.</div>
+            </div>
           </div>
         </div>
       </section>
@@ -246,7 +253,7 @@ export default async function Home() {
         <div className="wrap">
           <div>
             <span className="brand">{Logo}{name}</span>
-            <p className="fdesc">Ứng dụng desktop dịch, lồng tiếng và render video bằng AI. Trả một lần, dùng mãi mãi.</p>
+            <p className="fdesc">Ứng dụng desktop dịch, lồng tiếng và render video bằng AI. Miễn phí vận hành, trả một lần, dùng mãi mãi.</p>
           </div>
           <div className="fcol">
             <h4>Sản phẩm</h4>
@@ -255,9 +262,10 @@ export default async function Home() {
             <a href="#pricing">Báo giá</a>
           </div>
           <div className="fcol">
-            <h4>Hỗ trợ</h4>
-            <a href={zalo} target="_blank" rel="noopener noreferrer">Nhóm Zalo</a>
+            <h4>Theo dõi &amp; hỗ trợ</h4>
+            {fb && <a href={fb} target="_blank" rel="noopener noreferrer">Facebook — video demo</a>}
             <a href="#pricing">Mua bản quyền</a>
+            <a href="#support">Nhóm Zalo (qua mua bản quyền)</a>
           </div>
         </div>
         <div className="copy">© {new Date().getFullYear()} {name}. Thanh toán an toàn qua PayOS · VietQR.</div>
