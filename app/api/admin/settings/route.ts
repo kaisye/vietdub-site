@@ -69,6 +69,7 @@ export async function POST(req: Request) {
     if (typeof body.zaloGroupUrl === "string") patch.zaloGroupUrl = body.zaloGroupUrl.trim();
     if (typeof body.demoVideoUrl === "string") patch.demoVideoUrl = body.demoVideoUrl.trim();
     if (typeof body.facebookUrl === "string") patch.facebookUrl = body.facebookUrl.trim();
+    if (typeof body.tutorialVideoUrl === "string") patch.tutorialVideoUrl = body.tutorialVideoUrl.trim();
 
     const settings = await saveSettings(patch);
     return NextResponse.json({ settings, pricing: pricing(settings) });

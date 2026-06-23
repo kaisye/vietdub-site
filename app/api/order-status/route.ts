@@ -29,6 +29,7 @@ export async function GET(req: Request) {
       // not exposed.
       downloadUrl: paid ? `/api/download?os=${platform}` : null,
       zaloGroupUrl: settings?.zaloGroupUrl || null,
+      tutorialVideoUrl: settings?.tutorialVideoUrl || null,
     });
   } catch (err) {
     console.error("order-status error:", err);

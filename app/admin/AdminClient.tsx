@@ -12,6 +12,7 @@ interface Settings {
   zaloGroupUrl: string;
   demoVideoUrl: string;
   facebookUrl: string;
+  tutorialVideoUrl: string;
 }
 interface Pricing {
   price: number;
@@ -233,6 +234,14 @@ export default function AdminClient() {
                 placeholder="https://facebook.com/..."
                 value={settings.facebookUrl}
                 onChange={(e) => set("facebookUrl", e.target.value)}
+              />
+            </div>
+            <div className="field full">
+              <label>Link video hướng dẫn cài đặt (YouTube private — gửi kèm email & hiện trên trang cảm ơn)</label>
+              <input
+                placeholder="https://youtu.be/..."
+                value={settings.tutorialVideoUrl}
+                onChange={(e) => set("tutorialVideoUrl", e.target.value)}
               />
             </div>
           </div>

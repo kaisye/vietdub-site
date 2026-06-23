@@ -5,7 +5,7 @@ import { sheetsConfig, envDefaults } from "./config";
 // the Google Sheet. Edit them from /admin (or directly in the sheet) — changes
 // take effect within ~30s, no redeploy needed.
 const TAB = "Settings";
-const RANGE = `${TAB}!A1:B12`;
+const RANGE = `${TAB}!A1:B13`;
 
 export interface Settings {
   productName: string;
@@ -17,6 +17,7 @@ export interface Settings {
   zaloGroupUrl: string;
   demoVideoUrl: string; // YouTube hoặc link mp4; "" = ẩn mục demo
   facebookUrl: string; // trang demo video lồng tiếng; "" = ẩn link
+  tutorialVideoUrl: string; // YouTube private link hướng dẫn set up; "" = không gửi kèm email
 }
 
 export interface Pricing {
@@ -38,6 +39,7 @@ const ROWS: { key: string; get: (s: Settings) => string }[] = [
   { key: "zalo_group_url", get: (s) => s.zaloGroupUrl },
   { key: "demo_video_url", get: (s) => s.demoVideoUrl },
   { key: "facebook_url", get: (s) => s.facebookUrl },
+  { key: "tutorial_video_url", get: (s) => s.tutorialVideoUrl },
 ];
 
 function defaults(): Settings {
@@ -57,6 +59,7 @@ function defaults(): Settings {
     zaloGroupUrl: envDefaults.zaloGroupUrl,
     demoVideoUrl: envDefaults.demoVideoUrl,
     facebookUrl: envDefaults.facebookUrl,
+    tutorialVideoUrl: envDefaults.tutorialVideoUrl,
   };
 }
 
@@ -72,6 +75,7 @@ function fromMap(map: Record<string, string>): Settings {
     zaloGroupUrl: map["zalo_group_url"] ?? d.zaloGroupUrl,
     demoVideoUrl: map["demo_video_url"] ?? d.demoVideoUrl,
     facebookUrl: map["facebook_url"] ?? d.facebookUrl,
+    tutorialVideoUrl: map["tutorial_video_url"] ?? d.tutorialVideoUrl,
   };
 }
 

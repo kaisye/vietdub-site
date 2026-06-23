@@ -7,6 +7,7 @@ interface StatusResp {
   platform?: "win" | "mac" | null;
   downloadUrl?: string | null;
   zaloGroupUrl?: string | null;
+  tutorialVideoUrl?: string | null;
 }
 
 export default function SuccessClient({ orderCode }: { orderCode: number }) {
@@ -68,11 +69,17 @@ export default function SuccessClient({ orderCode }: { orderCode: number }) {
       <div className="success-card">
         <div className="emoji">🎉</div>
         <h1>Thanh toán thành công!</h1>
-        <p>Cảm ơn bạn. Đơn hàng <b>#{orderCode}</b> đã được xác nhận. Tải phần mềm và tham gia nhóm hỗ trợ bên dưới — link cũng đã được gửi vào email của bạn.</p>
+        <p>Cảm ơn bạn. Đơn hàng <b>#{orderCode}</b> đã được xác nhận.</p>
+        <p className="spam-notice">📧 Tất cả link đã được gửi đến email của bạn. Nếu không thấy, hãy kiểm tra thư mục <b>Spam</b>.</p>
         <div className="actions">
           {data?.downloadUrl && (
             <a className="primary" href={data.downloadUrl}>
               ⬇️ Tải VietDub {data.platform === "mac" ? "cho macOS (.dmg)" : "cho Windows (.exe)"}
+            </a>
+          )}
+          {data?.tutorialVideoUrl && (
+            <a className="secondary" href={data.tutorialVideoUrl} target="_blank" rel="noreferrer">
+              📹 Xem video hướng dẫn cài đặt
             </a>
           )}
           {data?.zaloGroupUrl && (

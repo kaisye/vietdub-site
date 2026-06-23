@@ -36,6 +36,7 @@ export const envDefaults = {
   zaloGroupUrl: optional("ZALO_GROUP_URL", ""),
   demoVideoUrl: optional("DEMO_VIDEO_URL", ""),
   facebookUrl: optional("FACEBOOK_URL", ""),
+  tutorialVideoUrl: optional("TUTORIAL_VIDEO_URL", ""),
 };
 
 // Password protecting the /admin dev page. Empty → admin page disabled.
