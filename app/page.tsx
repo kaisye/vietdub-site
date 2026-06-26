@@ -37,8 +37,64 @@ const faqItems: FaqItem[] = [
   { q: "Dữ liệu của tôi có an toàn không?", a: "Có. App chạy cục bộ, backend chỉ bind 127.0.0.1, video và cấu hình không gửi lên máy chủ của chúng tôi. Bạn toàn quyền kiểm soát." },
 ];
 
+const MAINTENANCE_DEFAULT =
+  "Chúng tôi đang nâng cấp hệ thống để phục vụ bạn tốt hơn. Vui lòng quay lại sau ít phút. Cảm ơn bạn đã kiên nhẫn!";
+
+function MaintenanceScreen({ name, message, zaloUrl }: { name: string; message: string; zaloUrl: string }) {
+  return (
+    <>
+      <div className="topband" />
+      <div
+        className="wrap"
+        style={{
+          minHeight: "70vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          gap: 18,
+          padding: "64px 20px",
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.png" alt={`${name} logo`} width={64} height={64} style={{ borderRadius: 14 }} />
+        <span className="pill"><span className="dot" /> Đang bảo trì</span>
+        <h1 style={{ fontSize: "clamp(28px, 5vw, 44px)", margin: 0 }}>
+          {name} đang được bảo trì
+        </h1>
+        <p className="lead" style={{ maxWidth: 560, margin: 0 }}>
+          {message || MAINTENANCE_DEFAULT}
+        </p>
+        {zaloUrl && (
+          <a className="btn btn-primary" href={zaloUrl} target="_blank" rel="noopener noreferrer">
+            Liên hệ hỗ trợ qua Zalo
+          </a>
+        )}
+        <p style={{ color: "var(--muted, #888)", fontSize: 13, marginTop: 8 }}>
+          © {new Date().getFullYear()} {name}
+        </p>
+      </div>
+    </>
+  );
+}
+
 export default async function Home() {
   const settings = await getSettings();
+
+  // Maintenance mode: take over the storefront entirely. Downloads, the success
+  // page, and /admin stay reachable so paid customers and the operator aren't
+  // locked out — only the marketing/buy flow is hidden here.
+  if (settings.maintenance) {
+    return (
+      <MaintenanceScreen
+        name={settings.productName}
+        message={settings.maintenanceMessage}
+        zaloUrl={settings.zaloGroupUrl}
+      />
+    );
+  }
+
   const p = pricing(settings);
   const demo = toEmbed(settings.demoVideoUrl);
   const priceText = vnd(p.price);

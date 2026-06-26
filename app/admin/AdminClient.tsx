@@ -13,6 +13,8 @@ interface Settings {
   demoVideoUrl: string;
   facebookUrl: string;
   tutorialVideoUrl: string;
+  maintenance: boolean;
+  maintenanceMessage: string;
 }
 interface Pricing {
   price: number;
@@ -187,6 +189,43 @@ export default function AdminClient() {
 
       {settings && (
         <form onSubmit={save}>
+          {/* ── Maintenance mode ─────────────────────────── */}
+          <div
+            style={{
+              marginBottom: 18,
+              padding: 16,
+              borderRadius: 12,
+              border: `1px solid ${settings.maintenance ? "#e0a800" : "#e2e2e2"}`,
+              background: settings.maintenance ? "#fff8e6" : "#fafafa",
+            }}
+          >
+            <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", fontWeight: 600 }}>
+              <input
+                type="checkbox"
+                checked={settings.maintenance}
+                onChange={(e) => set("maintenance", e.target.checked)}
+                style={{ width: 18, height: 18 }}
+              />
+              🛠️ Chế độ bảo trì
+              <span style={{ fontWeight: 400, fontSize: 13, color: settings.maintenance ? "#a86b00" : "#888" }}>
+                {settings.maintenance ? "ĐANG BẬT — khách thấy trang bảo trì, tạm dừng nhận đơn" : "đang tắt"}
+              </span>
+            </label>
+            <p className="hint" style={{ margin: "8px 0 0" }}>
+              Khi bật: trang chủ hiện thông báo bảo trì và <b>chặn mua mới</b>. Trang tải, trang cảm ơn
+              và /admin vẫn hoạt động bình thường. Áp dụng trong ~30 giây sau khi lưu.
+            </p>
+            <div className="field full" style={{ marginTop: 12, marginBottom: 0 }}>
+              <label>Thông báo bảo trì (để trống = dùng câu mặc định)</label>
+              <textarea
+                rows={2}
+                placeholder="Chúng tôi đang nâng cấp hệ thống, vui lòng quay lại sau ít phút…"
+                value={settings.maintenanceMessage}
+                onChange={(e) => set("maintenanceMessage", e.target.value)}
+              />
+            </div>
+          </div>
+
           <div className="admin-grid">
             <div className="field full">
               <label>Tên sản phẩm</label>

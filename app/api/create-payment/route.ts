@@ -23,6 +23,15 @@ export async function POST(req: Request) {
     }
 
     const settings = await getSettings();
+    // Block new purchases while in maintenance (defense in depth — the storefront
+    // already hides the buy flow, but a stale client / direct call must not slip
+    // an order through during maintenance).
+    if (settings.maintenance) {
+      return NextResponse.json(
+        { error: "Hệ thống đang bảo trì, tạm dừng nhận đơn mới. Vui lòng quay lại sau ít phút." },
+        { status: 503 }
+      );
+    }
     const orderCode = newOrderCode();
     // Price is computed server-side from current settings (promo-aware) so the
     // amount can never be tampered with from the client.

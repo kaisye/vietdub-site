@@ -37,6 +37,12 @@ export const envDefaults = {
   demoVideoUrl: optional("DEMO_VIDEO_URL", ""),
   facebookUrl: optional("FACEBOOK_URL", ""),
   tutorialVideoUrl: optional("TUTORIAL_VIDEO_URL", ""),
+  // Maintenance mode: when on, the storefront shows a maintenance notice and new
+  // purchases are blocked. Toggle live from /admin (no redeploy needed).
+  maintenance: ["1", "true", "on", "yes"].includes(
+    optional("MAINTENANCE", "0").trim().toLowerCase()
+  ),
+  maintenanceMessage: optional("MAINTENANCE_MESSAGE", ""),
 };
 
 // Password protecting the /admin dev page. Empty → admin page disabled.

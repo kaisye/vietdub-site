@@ -5,7 +5,7 @@ import { sheetsConfig, envDefaults } from "./config";
 // the Google Sheet. Edit them from /admin (or directly in the sheet) — changes
 // take effect within ~30s, no redeploy needed.
 const TAB = "Settings";
-const RANGE = `${TAB}!A1:B13`;
+const RANGE = `${TAB}!A1:B15`;
 
 export interface Settings {
   productName: string;
@@ -18,6 +18,13 @@ export interface Settings {
   demoVideoUrl: string; // YouTube hoặc link mp4; "" = ẩn mục demo
   facebookUrl: string; // trang demo video lồng tiếng; "" = ẩn link
   tutorialVideoUrl: string; // YouTube private link hướng dẫn set up; "" = không gửi kèm email
+  maintenance: boolean; // true = bật trang bảo trì + chặn mua mới
+  maintenanceMessage: string; // thông báo hiển thị khi bảo trì; "" = dùng mặc định
+}
+
+function parseBool(value: string | undefined, fallback: boolean): boolean {
+  if (value == null || value === "") return fallback;
+  return ["1", "true", "on", "yes"].includes(value.trim().toLowerCase());
 }
 
 export interface Pricing {
@@ -40,6 +47,8 @@ const ROWS: { key: string; get: (s: Settings) => string }[] = [
   { key: "demo_video_url", get: (s) => s.demoVideoUrl },
   { key: "facebook_url", get: (s) => s.facebookUrl },
   { key: "tutorial_video_url", get: (s) => s.tutorialVideoUrl },
+  { key: "maintenance", get: (s) => (s.maintenance ? "1" : "0") },
+  { key: "maintenance_message", get: (s) => s.maintenanceMessage },
 ];
 
 function defaults(): Settings {
@@ -60,6 +69,8 @@ function defaults(): Settings {
     demoVideoUrl: envDefaults.demoVideoUrl,
     facebookUrl: envDefaults.facebookUrl,
     tutorialVideoUrl: envDefaults.tutorialVideoUrl,
+    maintenance: envDefaults.maintenance,
+    maintenanceMessage: envDefaults.maintenanceMessage,
   };
 }
 
@@ -76,6 +87,8 @@ function fromMap(map: Record<string, string>): Settings {
     demoVideoUrl: map["demo_video_url"] ?? d.demoVideoUrl,
     facebookUrl: map["facebook_url"] ?? d.facebookUrl,
     tutorialVideoUrl: map["tutorial_video_url"] ?? d.tutorialVideoUrl,
+    maintenance: parseBool(map["maintenance"], d.maintenance),
+    maintenanceMessage: map["maintenance_message"] ?? d.maintenanceMessage,
   };
 }
 
