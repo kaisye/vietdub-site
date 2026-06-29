@@ -1,166 +1,171 @@
-# VietDub — Lồng tiếng & phụ đề video bằng AI, miễn phí vận hành
+# VietDub — AI video dubbing & subtitling, free to run
 
-> 🛒 **Trang bán hàng:** **https://vietdub-site.vercel.app/**
+> **Storefront:** **https://vietdub-site.vercel.app/**
 
-**VietDub** là ứng dụng desktop (Windows & macOS) tự động **tải → dịch → lồng
-tiếng → render** video ngay trên máy bạn. Dán link YouTube, Facebook hoặc Douyin,
-VietDub lo phần còn lại — **không cần API trả phí, không cần GPU** (có thì nhanh
-hơn), và mọi thứ chạy **cục bộ, riêng tư**. **Trả một lần, dùng mãi mãi**, kèm
-cập nhật miễn phí.
+**VietDub** is a desktop app (Windows & macOS) that automatically **downloads →
+translates → dubs → renders** video right on your machine. Paste a YouTube,
+Facebook, or Douyin link and VietDub does the rest — **no paid APIs, no GPU
+required** (faster if you have one), and everything runs **locally and
+privately**. **Pay once, use forever**, with free updates.
 
-## ✨ Tính năng
+## Features
 
-| | Tính năng | Mô tả |
-|---|---|---|
-| 📥 | **Tải video đa nền tảng** | Tải trực tiếp từ YouTube, Facebook, Douyin… Lấy phụ đề gốc theo thứ tự ưu tiên: phụ đề có sẵn → bóc **phụ đề cứng bằng OCR** → **nhận dạng giọng nói (STT)**; hoặc nạp file `.srt` của bạn. |
-| 🌐 | **Dịch khớp thời gian** | Dịch tự động sang tiếng Việt, giữ nguyên timing từng dòng để phụ đề và lời thoại luôn khít với video. |
-| 🎙️ | **Lồng tiếng Edge AI & NGHI-TTS** | Hàng chục giọng đọc tiếng Việt tự nhiên (kèm bộ giọng offline NGHI-TTS), dùng được ngay — không cần cấu hình cao, không cần GPU, không tốn API trả phí. |
-| 🧬 | **Nhân bản giọng OmniVoice** | Clone giọng từ chính mẫu giọng của bạn, chạy qua **Google Colab miễn phí** hoặc bằng GPU nếu có; lưu sẵn nhiều tài khoản Google để đổi nhanh. |
-| 🎨 | **Tùy biến & lưu style phụ đề** | Chỉnh font, màu, viền, vị trí…, **lưu style để lần sau chọn lại tức thì**; có thể **làm mờ vùng phụ đề cứng gốc** để che đi trước khi ghép phụ đề mới. |
-| ⏱️ | **Khớp tốc độ & nhạc nền** | Tự chỉnh tốc độ đọc cho khít timing gốc; giữ nhạc nền và thêm hiệu ứng âm thanh khi cần. |
-| 🎬 | **Render & tự cập nhật** | Xuất video hoàn chỉnh với **FFmpeg tích hợp**; app chạy cục bộ và tự cài bản cập nhật **đã ký an toàn**. |
+| Feature | What it does |
+|---|---|
+| **Multi-platform download** | Download straight from YouTube, Facebook, Douyin, and more. Source subtitles are obtained by priority: existing subtitles → **hard-sub extraction via OCR** → **speech recognition (STT)**; or load your own `.srt`. |
+| **Time-aligned translation** | Automatic translation to Vietnamese that preserves per-line timing, so subtitles and speech stay in sync with the video. |
+| **Edge AI & NGHI-TTS voices** | Dozens of natural Vietnamese voices (including the offline NGHI-TTS set), ready to use — no high-end hardware, no GPU, no paid API. |
+| **OmniVoice voice cloning** | Clone a voice from your own sample, running on **free Google Colab** or on a local GPU; save multiple Google accounts for fast switching. |
+| **Subtitle styling & presets** | Adjust font, color, outline, position, and more; **save styles to reuse instantly**; optionally **blur the original hard-sub area** to cover it before laying down the new subtitles. |
+| **Speed & background audio** | Auto-fit speaking rate to the original timing; keep the background music and add sound effects when needed. |
+| **Render & auto-update** | Export the finished video with **bundled FFmpeg**; the app runs locally and installs **signed, secure updates** automatically. |
 
-## 💻 Nền tảng & yêu cầu
+## Platform & requirements
 
-- **Windows 10/11 (x64)** và **macOS Apple Silicon (M1 trở lên)**.
-- Trình cài đặt tự lo môi trường cần thiết — **không cần quyền admin**.
-- **Không cần GPU**, **không tốn API trả phí**. Backend chỉ bind `127.0.0.1`, nên
-  video và cấu hình của bạn **không gửi lên bất kỳ máy chủ nào**.
+- **Windows 10/11 (x64)** and **macOS Apple Silicon (M1 or newer)**.
+- The installer sets up everything it needs — **no admin rights required**.
+- **No GPU** and **no paid APIs**. The backend binds only to `127.0.0.1`, so your
+  video and configuration are **never sent to any server**.
 
-## 🛒 Mua bản quyền
+## Buy a license
 
-👉 **https://vietdub-site.vercel.app/**
+**https://vietdub-site.vercel.app/**
 
-Trả một lần, sở hữu vĩnh viễn kèm cập nhật miễn phí. Thanh toán qua **VietQR
-(PayOS)**: quét QR, hệ thống tự xác nhận trong vài giây rồi gửi **link tải + link
-nhóm Zalo hỗ trợ** về email.
-
----
-
-# 🧰 Về repo này — mã nguồn trang bán hàng
-
-Phần dưới đây dành cho người **vận hành trang bán hàng**: web bán phần mềm VietDub
-với **thanh toán tự động qua PayOS (VietQR)** — khách quét QR và chuyển khoản, hệ
-thống tự xác nhận → lưu đơn vào **Google Sheet** → gửi **email link tải** + **link
-nhóm Zalo**, và hiện link ngay trên trang cảm ơn. Toàn bộ chạy **miễn phí**: Vercel
-(web + webhook) · Google Sheets (đơn hàng) · PayOS (thanh toán) · GitHub Releases
-(file cài) · Gmail SMTP (email).
-
-## Luồng hoạt động
-
-```
-Khách nhập email → /api/create-payment
-   → tạo orderCode, ghi đơn PENDING vào Google Sheet
-   → tạo link PayOS (VietQR) → chuyển khách sang trang thanh toán PayOS
-Khách chuyển khoản
-   → PayOS gọi /api/webhook (đã ký, có xác thực chữ ký)
-   → cập nhật đơn thành PAID, gửi email link tải + Zalo
-Khách quay về /success?orderCode=...
-   → trang tự hỏi /api/order-status đến khi PAID → hiện nút Tải + Zalo
-```
+Pay once, own it forever with free updates. Payment is via **VietQR (PayOS)**:
+scan the QR, the system confirms within seconds, then emails you the **download
+link + Zalo support group link**.
 
 ---
 
-## 1. Cài đặt & chạy local
+# About this repo — storefront source
+
+The section below is for **operating the storefront**: the website that sells
+VietDub with **automatic payment via PayOS (VietQR)** — the customer scans the QR
+and transfers, the system confirms automatically → records the order in **Google
+Sheets** → sends the **download-link email** + **Zalo group link**, and shows the
+link right on the thank-you page. Everything runs **free**: Vercel (web + webhook)
+· Google Sheets (orders) · PayOS (payments) · GitHub Releases (installer) · Gmail
+SMTP (email).
+
+## How it works
+
+```
+Customer enters email → /api/create-payment
+   → create orderCode, write a PENDING order to Google Sheets
+   → create a PayOS (VietQR) link → redirect the customer to PayOS checkout
+Customer transfers
+   → PayOS calls /api/webhook (signed, signature-verified)
+   → mark the order PAID, send the download-link + Zalo email
+Customer returns to /success?orderCode=...
+   → the page polls /api/order-status until PAID → shows Download + Zalo buttons
+```
+
+---
+
+## 1. Install & run locally
 
 ```bash
 npm install
-cp .env.example .env.local   # rồi điền các biến (xem mục 2–5)
+cp .env.example .env.local   # then fill in the variables (see sections 2–5)
 npm run dev                  # http://localhost:3000
 ```
 
-## 2. PayOS (thanh toán) — miễn phí
+## 2. PayOS (payments) — free
 
-1. Đăng ký tại **https://my.payos.vn**, tạo **Kênh thanh toán** (liên kết tài
-   khoản ngân hàng của bạn).
-2. Vào kênh → mục **API**, lấy 3 giá trị, điền vào `.env.local`:
+1. Sign up at **https://my.payos.vn** and create a **Payment Channel** (linked to
+   your bank account).
+2. In the channel → **API** section, get the 3 values and put them in `.env.local`:
    - `PAYOS_CLIENT_ID`
    - `PAYOS_API_KEY`
    - `PAYOS_CHECKSUM_KEY`
-3. Khai báo **Webhook URL** (sau khi deploy, mục 6):
-   `https://<tên-app>.vercel.app/api/webhook?token=<WEBHOOK_TOKEN>`
-   Bấm **Kiểm tra** — PayOS gửi ping thử, hệ thống trả 200 là hợp lệ.
+3. Set the **Webhook URL** (after deploying, section 6):
+   `https://<app-name>.vercel.app/api/webhook?token=<WEBHOOK_TOKEN>`
+   Click **Test** — PayOS sends a ping; a 200 response means it's valid.
 
-## 3. Google Sheets (lưu đơn hàng) — miễn phí
+## 3. Google Sheets (order storage) — free
 
-1. Tạo một Google Sheet trống. Copy **SHEET_ID** trong URL
+1. Create an empty Google Sheet. Copy the **SHEET_ID** from the URL
    (`docs.google.com/spreadsheets/d/`**`SHEET_ID`**`/edit`) → `GOOGLE_SHEET_ID`.
-   (Sheet/tab "Orders" và dòng tiêu đề sẽ được tạo tự động ở lần ghi đầu.)
-2. Vào **Google Cloud Console** → tạo project → **APIs & Services**:
-   - Bật **Google Sheets API**.
-   - **Credentials → Create credentials → Service account** → tạo xong vào
-     service account → **Keys → Add key → JSON** (tải file về).
-3. Mở file JSON, lấy:
+   (The "Orders" tab and header row are created automatically on first write.)
+2. In **Google Cloud Console** → create a project → **APIs & Services**:
+   - Enable the **Google Sheets API**.
+   - **Credentials → Create credentials → Service account** → once created, open
+     the service account → **Keys → Add key → JSON** (download the file).
+3. Open the JSON file and take:
    - `client_email` → `GOOGLE_SERVICE_ACCOUNT_EMAIL`
-   - `private_key`  → `GOOGLE_PRIVATE_KEY` (dán cả `-----BEGIN…END-----`, giữ
-     nguyên các `\n`, bọc trong dấu `"`).
-4. **Chia sẻ Google Sheet** (nút Share) cho địa chỉ `client_email` đó, quyền
-   **Editor**. (Quan trọng — thiếu bước này sẽ lỗi 403.)
+   - `private_key`  → `GOOGLE_PRIVATE_KEY` (paste the whole `-----BEGIN…END-----`,
+     keep the `\n` sequences, and wrap it in `"`).
+4. **Share the Google Sheet** (Share button) with that `client_email`, with
+   **Editor** access. (Important — skipping this causes a 403 error.)
 
-## 4. Email Gmail (gửi link tải) — miễn phí, tuỳ chọn
+## 4. Gmail email (sending the download link) — free, optional
 
-1. Bật **Xác minh 2 bước** cho tài khoản Gmail.
-2. Tạo **App password** (https://myaccount.google.com/apppasswords) — chuỗi 16
-   ký tự.
-3. Điền: `SMTP_USER` = email Gmail, `SMTP_PASS` = app password.
+1. Enable **2-Step Verification** on the Gmail account.
+2. Create an **App password** (https://myaccount.google.com/apppasswords) — a
+   16-character string.
+3. Fill in: `SMTP_USER` = Gmail address, `SMTP_PASS` = app password.
 
-> Bỏ trống `SMTP_USER`/`SMTP_PASS` thì hệ thống **bỏ qua gửi email** — khách vẫn
-> nhận link tải ngay trên trang `/success`.
+> Leave `SMTP_USER`/`SMTP_PASS` empty and the system **skips sending email** — the
+> customer still gets the download link right on the `/success` page.
 
-## 5. Giá, khuyến mãi & nội dung sản phẩm
+## 5. Pricing, promotions & product content
 
-Các giá trị này chỉ là **mặc định lần đầu**. Sau khi seed, chúng nằm trong tab
-**`Settings`** của Google Sheet và **sửa được ở trang `/admin`** (không cần deploy lại).
+These values are only **first-run defaults**. After seeding, they live in the
+**`Settings`** tab of the Google Sheet and are **editable from `/admin`** (no
+redeploy needed).
 
-| Biến | Ý nghĩa |
+| Variable | Meaning |
 |---|---|
-| `PRODUCT_NAME` | Tên sản phẩm |
-| `BASE_PRICE` | Giá gốc (VND), vd `499000` |
-| `PROMO_PRICE` | Giá khuyến mãi (VND), vd `249000`. Phải nhỏ hơn `BASE_PRICE` thì mới hiện giảm giá |
-| `PROMO_DAYS` | Số ngày khuyến mãi kể từ lần seed (dùng khi `PROMO_ENDS_AT` trống), vd `7` |
-| `PROMO_ENDS_AT` | Mốc kết thúc cụ thể (ISO). Hết mốc này giá tự về `BASE_PRICE` |
-| `DOWNLOAD_URL` | Link `.exe` trên GitHub Releases (đổi khi ra bản mới) |
-| `ZALO_GROUP_URL` | Link mời nhóm Zalo |
-| `ADMIN_PASSWORD` | Mật khẩu vào trang `/admin`. **Trống = tắt trang admin** |
-| `WEBHOOK_TOKEN` | Chuỗi ngẫu nhiên bảo vệ webhook (thêm vào URL webhook ở PayOS) |
-| `NEXT_PUBLIC_SITE_URL` | URL site (local `http://localhost:3000`, prod là domain Vercel) |
+| `PRODUCT_NAME` | Product name |
+| `BASE_PRICE` | Base price (VND), e.g. `499000` |
+| `PROMO_PRICE` | Promo price (VND), e.g. `249000`. Must be lower than `BASE_PRICE` for a discount to show |
+| `PROMO_DAYS` | Promo length in days from the seed (used when `PROMO_ENDS_AT` is empty), e.g. `7` |
+| `PROMO_ENDS_AT` | A specific end timestamp (ISO). After it, the price reverts to `BASE_PRICE` |
+| `DOWNLOAD_URL` | The `.exe` link on GitHub Releases (update it for each new build) |
+| `ZALO_GROUP_URL` | Zalo group invite link |
+| `ADMIN_PASSWORD` | Password for `/admin`. **Empty = admin page disabled** |
+| `WEBHOOK_TOKEN` | A random string protecting the webhook (added to the PayOS webhook URL) |
+| `NEXT_PUBLIC_SITE_URL` | Site URL (local `http://localhost:3000`, prod is the Vercel domain) |
 
-### Cách giảm giá hoạt động
-- Khi `now < PROMO_ENDS_AT` và `PROMO_PRICE < BASE_PRICE`: trang chủ hiện giá khuyến
-  mãi, gạch ngang giá gốc, kèm badge **−X%** và đồng hồ đếm ngược.
-- Hết hạn: giá **tự động** quay về `BASE_PRICE`, không cần làm gì.
-- Giá khách trả luôn được tính lại ở server (không sửa được từ trình duyệt).
+### How the discount works
+- When `now < PROMO_ENDS_AT` and `PROMO_PRICE < BASE_PRICE`: the home page shows
+  the promo price, strikes through the base price, and adds a **−X%** badge plus a
+  countdown.
+- After expiry: the price reverts to `BASE_PRICE` **automatically**, no action needed.
+- The price the customer pays is always recomputed on the server (it can't be
+  tampered with from the browser).
 
-### Trang quản trị `/admin` (sửa về sau)
-Vào `https://<domain>/admin`, nhập `ADMIN_PASSWORD`. Tại đây bạn có thể:
-- Sửa **giá gốc / giá khuyến mãi / hạn khuyến mãi**, tên sản phẩm, link tải, link Zalo.
-- Bấm **Lưu** → áp dụng cho khách trong ~30 giây, **không cần deploy lại**.
-- Xem nhanh **số đơn, doanh thu, đơn gần đây**.
+### Admin page `/admin` (edit later)
+Go to `https://<domain>/admin` and enter `ADMIN_PASSWORD`. There you can:
+- Edit **base price / promo price / promo deadline**, product name, download link,
+  Zalo link.
+- Click **Save** → applies to customers within ~30 seconds, **no redeploy needed**.
+- See a quick view of **order count, revenue, recent orders**.
 
-> Muốn đổi giá mà không mở web? Sửa trực tiếp ô tương ứng trong tab `Settings` của
-> Google Sheet cũng được — kết quả như nhau.
-
----
-
-## 6. Deploy lên Vercel — miễn phí
-
-1. Push thư mục này lên một repo GitHub (vd `vietdub-site`).
-2. Vào **https://vercel.com** → **Add New → Project** → chọn repo → **Deploy**.
-3. **Project Settings → Environment Variables**: thêm **tất cả** biến trong
-   `.env.example` với giá trị thật (đặc biệt đổi `NEXT_PUBLIC_SITE_URL` thành
-   domain Vercel, vd `https://vietdub.vercel.app`).
-4. **Redeploy** để biến môi trường có hiệu lực.
-5. Quay lại PayOS, đặt **Webhook URL** trỏ về `…/api/webhook?token=…` (mục 2.3).
-
-Xong. Mỗi lần ra bản VietDub mới: chỉ cần sửa `DOWNLOAD_URL` (hoặc để
-`releases/latest/...` thì không cần đổi gì).
+> Want to change the price without opening the site? Edit the matching cell in the
+> `Settings` tab of the Google Sheet directly — same result.
 
 ---
 
-## Lưu ý bảo mật
+## 6. Deploy to Vercel — free
 
-- **Không commit** `.env.local` hay file JSON service account (đã có trong
+1. Push this folder to a GitHub repo (e.g. `vietdub-site`).
+2. Go to **https://vercel.com** → **Add New → Project** → pick the repo → **Deploy**.
+3. **Project Settings → Environment Variables**: add **all** variables from
+   `.env.example` with their real values (in particular set `NEXT_PUBLIC_SITE_URL`
+   to the Vercel domain, e.g. `https://vietdub.vercel.app`).
+4. **Redeploy** so the environment variables take effect.
+5. Back in PayOS, set the **Webhook URL** to `…/api/webhook?token=…` (section 2.3).
+
+Done. For each new VietDub build, just update `DOWNLOAD_URL` (or point it at
+`releases/latest/...` so nothing needs changing).
+
+---
+
+## Security notes
+
+- **Do not commit** `.env.local` or the service-account JSON file (already in
   `.gitignore`).
-- File cài đặt nằm trên repo public nên đây là mô hình **tin tưởng**
-  (honor-system): ai có link đều tải được. Nếu sau này cần chống sao chép, phải
-  thêm license key vào app VietDub (việc riêng, lớn hơn).
+- The installer lives in a public repo, so this is an **honor-system** trust model:
+  anyone with the link can download it. If you later need copy protection, you'd
+  add a license key to the VietDub app (a separate, larger effort).
