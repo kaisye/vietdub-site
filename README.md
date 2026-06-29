@@ -1,12 +1,50 @@
-# VietDub — Trang bán & giao phần mềm tự động
+# VietDub — Lồng tiếng & phụ đề video bằng AI, miễn phí vận hành
 
-Trang web bán phần mềm VietDub với **thanh toán tự động qua PayOS (VietQR)**:
-khi khách quét QR và chuyển khoản, hệ thống tự xác nhận → lưu đơn vào **Google
-Sheet** → gửi **email link tải** + **link nhóm Zalo**, và hiện link ngay trên
-trang cảm ơn.
+> 🛒 **Trang bán hàng:** **https://vietdub-site.vercel.app/**
 
-Toàn bộ chạy **miễn phí**: Vercel (web + webhook) · Google Sheets (đơn hàng) ·
-PayOS (thanh toán) · GitHub Releases (file cài) · Gmail SMTP (email).
+**VietDub** là ứng dụng desktop (Windows & macOS) tự động **tải → dịch → lồng
+tiếng → render** video ngay trên máy bạn. Dán link YouTube, Facebook hoặc Douyin,
+VietDub lo phần còn lại — **không cần API trả phí, không cần GPU** (có thì nhanh
+hơn), và mọi thứ chạy **cục bộ, riêng tư**. **Trả một lần, dùng mãi mãi**, kèm
+cập nhật miễn phí.
+
+## ✨ Tính năng
+
+| | Tính năng | Mô tả |
+|---|---|---|
+| 📥 | **Tải video đa nền tảng** | Tải trực tiếp từ YouTube, Facebook, Douyin… Lấy phụ đề gốc theo thứ tự ưu tiên: phụ đề có sẵn → bóc **phụ đề cứng bằng OCR** → **nhận dạng giọng nói (STT)**; hoặc nạp file `.srt` của bạn. |
+| 🌐 | **Dịch khớp thời gian** | Dịch tự động sang tiếng Việt, giữ nguyên timing từng dòng để phụ đề và lời thoại luôn khít với video. |
+| 🎙️ | **Lồng tiếng Edge AI & NGHI-TTS** | Hàng chục giọng đọc tiếng Việt tự nhiên (kèm bộ giọng offline NGHI-TTS), dùng được ngay — không cần cấu hình cao, không cần GPU, không tốn API trả phí. |
+| 🧬 | **Nhân bản giọng OmniVoice** | Clone giọng từ chính mẫu giọng của bạn, chạy qua **Google Colab miễn phí** hoặc bằng GPU nếu có; lưu sẵn nhiều tài khoản Google để đổi nhanh. |
+| 🎨 | **Tùy biến & lưu style phụ đề** | Chỉnh font, màu, viền, vị trí…, **lưu style để lần sau chọn lại tức thì**; có thể **làm mờ vùng phụ đề cứng gốc** để che đi trước khi ghép phụ đề mới. |
+| ⏱️ | **Khớp tốc độ & nhạc nền** | Tự chỉnh tốc độ đọc cho khít timing gốc; giữ nhạc nền và thêm hiệu ứng âm thanh khi cần. |
+| 🎬 | **Render & tự cập nhật** | Xuất video hoàn chỉnh với **FFmpeg tích hợp**; app chạy cục bộ và tự cài bản cập nhật **đã ký an toàn**. |
+
+## 💻 Nền tảng & yêu cầu
+
+- **Windows 10/11 (x64)** và **macOS Apple Silicon (M1 trở lên)**.
+- Trình cài đặt tự lo môi trường cần thiết — **không cần quyền admin**.
+- **Không cần GPU**, **không tốn API trả phí**. Backend chỉ bind `127.0.0.1`, nên
+  video và cấu hình của bạn **không gửi lên bất kỳ máy chủ nào**.
+
+## 🛒 Mua bản quyền
+
+👉 **https://vietdub-site.vercel.app/**
+
+Trả một lần, sở hữu vĩnh viễn kèm cập nhật miễn phí. Thanh toán qua **VietQR
+(PayOS)**: quét QR, hệ thống tự xác nhận trong vài giây rồi gửi **link tải + link
+nhóm Zalo hỗ trợ** về email.
+
+---
+
+# 🧰 Về repo này — mã nguồn trang bán hàng
+
+Phần dưới đây dành cho người **vận hành trang bán hàng**: web bán phần mềm VietDub
+với **thanh toán tự động qua PayOS (VietQR)** — khách quét QR và chuyển khoản, hệ
+thống tự xác nhận → lưu đơn vào **Google Sheet** → gửi **email link tải** + **link
+nhóm Zalo**, và hiện link ngay trên trang cảm ơn. Toàn bộ chạy **miễn phí**: Vercel
+(web + webhook) · Google Sheets (đơn hàng) · PayOS (thanh toán) · GitHub Releases
+(file cài) · Gmail SMTP (email).
 
 ## Luồng hoạt động
 
